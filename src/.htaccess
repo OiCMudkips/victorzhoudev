@@ -1,0 +1,14 @@
+// Generated with https://www.htaccessredirect.net/
+
+//301 Redirect Old File
+Redirect 301 /.git /.git.html
+
+//Prevent viewing of .htaccess file
+<Files .htaccess>
+order allow,deny
+deny from all
+</Files>
+
+//Prevent directory listings
+Options All -Indexes
+ 
