@@ -10,7 +10,7 @@ body > img {
   padding: 0.5em;
 }
 body {
-  font-family: "Courier New", monospace;
+  font-family: "Tahoma", sans-serif;
   text-align: center;
 }
 #logos > a > img {
@@ -20,6 +20,7 @@ body {
   margin: 0px;
 }
 .code {
+  font-family: "Courier New", monospace;
   background-color:lightgrey;
 }
 .gist-data {
