@@ -19,3 +19,9 @@ body {
 .grid-reset > * {
   margin: 0px;
 }
+.code {
+  background-color:lightgrey;
+}
+.gist-data {
+  max-height: 400px;
+}
