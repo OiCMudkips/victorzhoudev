@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <title lang="en">Improving Geoguessr Guesses for Japanese Railway Stations</title>
+  <link rel="icon" type="image/png" href="https://s3.ca-central-1.amazonaws.com/victorzhoudev.media/img/icon.png">
+  <link rel="stylesheet" href="../css/css.css">
+</head>
+<body lang="en" class="prose">
+  <h1>
+    Improving Geoguessr Guesses for Japanese Railway Stations<br />
+  </h1>
+  <p class="subtitle">Written December 2020</p>
+  <p class="subtitle">
+    Thank you to ekidata.jp, and the operating company,
+    <a href="https://codeplus.co.jp/">CodePlus</a>, for providing the data used in this article.
+  </p>
+  <h2>Geoguessr Background</h2>
+  <p>
+    Sometime last year a couple of friends and I started to play Geoguessr.
+    We would end up playing all sorts of maps, but one map that became a favourite were these two:
+    <a href="https://www.geoguessr.com/maps/5e5b1e76c2a93b3018908e77">Map 1</a> and
+    <a href="https://www.geoguessr.com/maps/5ebbc02fdf77de19b4d1632e">Map 2</a> [1].
+    Both of these maps have locations near railway stations in Japan, which appealed to us
+    for whatever reason.
+  </p>
+  <p>
+    In these maps, we can improve our guessing area from all of Japan to a specific railway
+    company's network, if we can figure out which railway company station operates the station.
+    The easiest hint to find is a sign which names the railway company.
+    This hint is more common in urban areas where multiple railway companies operate.
+  </p>
+  <div style="display:flex; justify-content: space-between; text-align: center;">
+    <span>
+      <img src="https://s3.ca-central-1.amazonaws.com/victorzhoudev.media/img/jp_eki_geoguessr/jr_shinjuku.jpg" style="max-height: 20em;" alt="Sign for Shinjuku station, which includes the name of the operating company" loading="lazy"/>
+      <p>
+        Under the JR logo is Japanese text which reads <span lang="jp">JR東日本</span> which is
+        JR East in English.<br/>
+        Image source: [2]
+      </p>
+    </span>
+    <span>
+      <img src="https://s3.ca-central-1.amazonaws.com/victorzhoudev.media/img/jp_eki_geoguessr/jr_areas.svg" style="max-height: 20em;" alt="Map showing approximate operating area of each JR subsidiary" loading="lazy"/> 
+      <p>
+      Operating area map for JR subsidiaries<br/>
+      Image source: [3]
+      </p>
+    </span>
+  </div>
+  <p>
+    The operating area map is colour-coded in a specific way. The map colour for each subsidiary
+    matches the colour that company uses in their branding, including on station signs.
+    You can therefore just look at the colour of a sign to determine which JR subsidiary operates
+    the station.
+    This is mostly helpful for stations in urban and suburban areas, where the JR branding is more
+    likely to be prominent. 
+  </p>
+  <div style="display: flex; justify-content: space-between; text-align: center;">
+    <span>
+      <img src="https://s3.ca-central-1.amazonaws.com/victorzhoudev.media/img/jp_eki_geoguessr/maya_station.jpg" style="max-height: 5.5em;" alt="Maya Station sign showing the JR logo in dark blue" loading="lazy"/>
+      <p>
+        The JR logo here is dark blue, telling us this station is run by JR West.<br/>
+        Image source: [4]
+      </p>
+    </span>
+    <span>
+      <img src="https://s3.ca-central-1.amazonaws.com/victorzhoudev.media/img/jp_eki_geoguessr/Reuke-station.JPG" style="max-height: 5.5em;" alt="Reuke Station sign showing the JR logo in light green" loading="lazy"/>
+      <p>
+        The JR logo here is light green, telling us this station is run by JR Hokkaido.<br/>
+        Image source: [5]
+      </p>
+    </span>
+  </div>
+  <p>
+    As an obvious side note, non-JR railway companies follow the same idea.
+    If we know a station is run by Hankyu Railways, the station is probably somewhere in Kansai.
+  </p>
+  <p>
+    Now, let's say we figure out which railway company operates the station.
+    Our goal is now to guess the station's location.
+    If we have no time constraints, we could scan through every station visible on Google Maps and
+    look for the station in the railway company's area.
+    This strategy isn't fun though, and also my friends and I play on a 1-minute timer,
+    so this strategy isn't feasible for us either.
+  </p>
+  <p>
+    Sometimes we can use typical Geoguessr strategies to narrow down the guessing area, but if
+    you've been to Japan, you'll know that many places in Japan look very similar. How can we
+    improve our guess in this case?
+  </p>
+  <h3>Using ekidata.jp</h3>
+  <p>
+    <a href="https://ekidata.jp/">ekidata.jp</a> is a site which hosts various CSVs containing
+    data about every railway station and railway line in Japan. Each station's coordinates are
+    included in station.csv, along with the line it is on and the company that runs it.
+    We can precompute the geographic center of all of an operating company's stations
+    with various restrictions, remember those geographic centers, and guess at those locations
+    when appropriate.
+  </p>
+  <p>
+    I calculated some relevant locations by converting the ekidata.jp CSVs into sqlite tables,
+    and using some Python scripts to calculate the geographic centers. The scripts I used to
+    are in this <a href="https://github.com/OiCMudkips/ekidata_jp_scripts">Github repo</a>.
+  </p>
+  <hr />
+  <ol style="list-style-type: none;">
+    <li>
+      [1] We enjoyed playing Map 1 more because it seems like there are more stations located
+      in some city, making guessing in Map 1 a lot easier. If you are a small station enthusiast,
+      you will find more of those in Map 2.
+    </li>
+    <li>
+      [2] <a href="https://commons.wikimedia.org/wiki/File:JR_Shinjuku_Station_South_Gates.jpg">Original image</a> uploaded by <a href="https://commons.wikimedia.org/wiki/User:Mister0124">Mister0124 on Wikimedia</a>. Remixed and distributed under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.
+    </li>
+    <li>
+      [3] <a href="https://commons.wikimedia.org/wiki/File:JR_Rail_en.svg">Image</a> uploaded by <a href="https://commons.wikimedia.org/wiki/User:Vladsinger">Vladsinger on Wikimedia</a>. Distributed under <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>.
+    </li>
+    <li>
+      [4] <a href="https://commons.wikimedia.org/wiki/File:%E9%96%8B%E6%A5%AD%E5%BD%93%E6%97%A5%E3%81%AEJR%E6%91%A9%E8%80%B6%E9%A7%85_Maya_Sta._(2016-3-26%E6%92%AE%E5%BD%B1)_-_panoramio.jpg">Original image</a> uploaded by iloverjoa on Panoramio. Remixed and distributed under <a href="https://creativecommons.org/licenses/by/3.0/deed.en">CC BY 3.0</a>.
+    </li>
+    <li>
+      [5] <a href="https://commons.wikimedia.org/wiki/File:Reuke-station.JPG">Original image</a> uploaded by D-s-yama on Wikimedia. Remixed and distributed under <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.
+    </li>
+  </ol>
+  <hr />
+  <div class="links-footer">
+    <a href="index.html">Projects</a>
+    <a href="../index.html">Home</a>
+  </div>
+</body>
