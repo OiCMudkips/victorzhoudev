@@ -6,516 +6,520 @@
   <link rel="stylesheet" href="../css/css.css">
 </head>
 <body lang="en" class="prose">
-  <h1>Using <span class="code">argparse</span> and <span class="code">cmd</span> together</h1>
-  <p class="subtitle">Written May 2020 - <a href="argparse_and_cmd.html">With GitHub Gists version</a></p>
+  <header>
+    <h1>Using <span class="code">argparse</span> and <span class="code">cmd</span> together</h1>
+    <p class="subtitle">Written May 2020 - <a href="argparse_and_cmd.html">With GitHub Gists version</a></p>
+  </header>
   <hr />
-  <p>
-    I'm currently creating an interactive tool in Python to do CRUD things.
-    This article focuses on how I'm using two Python standard libraries,
-    <a class="code" href="https://docs.python.org/3.7/library/argparse.html">argparse</a>
-    and <a class="code" href="https://docs.python.org/3.7/library/cmd.html">cmd</a>, to
-    enable user interaction.
-  </p>
-  <p>
-    Here's a very simple <span class="code">cmd</span>-based tool that does two things: create and
-    delete servers, along with some sample output from running the tool.
-  </p>
-  <pre class="code-block">
-import cmd
+  <main>
+    <p>
+        I'm currently creating an interactive tool in Python to do CRUD things.
+        This article focuses on how I'm using two Python standard libraries,
+        <a class="code" href="https://docs.python.org/3.7/library/argparse.html">argparse</a>
+        and <a class="code" href="https://docs.python.org/3.7/library/cmd.html">cmd</a>, to
+        enable user interaction.
+    </p>
+    <p>
+        Here's a very simple <span class="code">cmd</span>-based tool that does two things: create and
+        delete servers, along with some sample output from running the tool.
+    </p>
+    <pre class="code-block">
+    import cmd
 
-class ServerCmd(cmd.Cmd):
-    prompt = '[Servers] '
-    
-    def do_create(self, arg):
-        create_server(name=arg)
-        print(f"Created server {arg}")
+    class ServerCmd(cmd.Cmd):
+        prompt = '[Servers] '
         
-    def do_delete(self, arg):
-        delete_server(name=arg)
-        print(f"Deleted server {arg}")
-        
-    def do_exit(self, arg):
-        return True
+        def do_create(self, arg):
+            create_server(name=arg)
+            print(f"Created server {arg}")
+            
+        def do_delete(self, arg):
+            delete_server(name=arg)
+            print(f"Deleted server {arg}")
+            
+        def do_exit(self, arg):
+            return True
 
-def create_server(name):
-    pass
+    def create_server(name):
+        pass
 
-def delete_server(name):
-    pass
+    def delete_server(name):
+        pass
 
-if __name__ == '__main__':
-    ServerCmd().cmdloop()</pre>
-  <pre class="code-block">
-PS C:\Users\Victor\Documents\GitHub\argparse_cmd_demo> & 'E:\Program Files\Python\Python37-32\python.exe' '1.py'
-[Servers] create my_server
-Created server my_server
-[Servers] delete my_server
-Deleted server my_server</pre>
-  <p>
-    The important thing to note here is that <span class="code">arg</span> is a single string
-    containing all the text after the name of the command. This means that if we want to pass
-    more than one argument to this tool, we'll need to split <span class="code">arg</span>
-    manually. This differs from <span class="code">sys.argv</span>, which is
-    already a list of strings.
-  </p>
-  <p>
-    Let's try to modify <span class="code">1.py</span> to handle an additional argument
-    in the <span class="code">do_create</span> function.
-  </p>
-  <pre class="code-block">
-import cmd
+    if __name__ == '__main__':
+        ServerCmd().cmdloop()</pre>
+    <pre class="code-block">
+    PS C:\Users\Victor\Documents\GitHub\argparse_cmd_demo> & 'E:\Program Files\Python\Python37-32\python.exe' '1.py'
+    [Servers] create my_server
+    Created server my_server
+    [Servers] delete my_server
+    Deleted server my_server</pre>
+    <p>
+        The important thing to note here is that <span class="code">arg</span> is a single string
+        containing all the text after the name of the command. This means that if we want to pass
+        more than one argument to this tool, we'll need to split <span class="code">arg</span>
+        manually. This differs from <span class="code">sys.argv</span>, which is
+        already a list of strings.
+    </p>
+    <p>
+        Let's try to modify <span class="code">1.py</span> to handle an additional argument
+        in the <span class="code">do_create</span> function.
+    </p>
+    <pre class="code-block">
+    import cmd
 
-class ServerCmd(cmd.Cmd):
-    prompt = '[Servers] '
+    class ServerCmd(cmd.Cmd):
+        prompt = '[Servers] '
 
-    def do_create(self, arg):
-        name, operating_system = arg.split()
-        create_server(name=name, os=operating_system)
-        print(f"Created server {name}; OS: {operating_system}")
+        def do_create(self, arg):
+            name, operating_system = arg.split()
+            create_server(name=name, os=operating_system)
+            print(f"Created server {name}; OS: {operating_system}")
 
-    def do_delete(self, arg):
-        delete_server(name=arg)
-        print(f"Deleted server {arg}")
+        def do_delete(self, arg):
+            delete_server(name=arg)
+            print(f"Deleted server {arg}")
 
-    def do_exit(self, arg):
-        return True
+        def do_exit(self, arg):
+            return True
 
-def create_server(name, os):
-    pass
+    def create_server(name, os):
+        pass
 
-def delete_server(name):
-    pass
+    def delete_server(name):
+        pass
 
-if __name__ == '__main__':
-    ServerCmd().cmdloop()</pre>
-  <pre class="code-block">
-PS C:\Users\Victor\Documents\GitHub\argparse_cmd_demo> & 'E:\Program Files\Python\Python37-32\python.exe' '2.py'
-[Servers] create my_server Windows
-Created server my_server; OS: Windows</pre>
-  <p>
-    Great, we can now interpret two arguments. However, if we were to add more arguments, the user
-    would need to remember the order of arguments, and it would be clumsy to unpack an array into a
-    large number of individual local variables. Additionally, this method of parsing arguments
-    doesn't support optional arguments cleanly. These are problems that the standard library
-    <span class="code">argparse</span> has solutions for. We can use
-    <span class="code">argparse.ArgumentParser</span> to scale the number of arguments in a
-    maintainable way, and support optional arguments at the same time.
-  </p>
-  <pre class="code-block">
-import argparse
-import cmd
+    if __name__ == '__main__':
+        ServerCmd().cmdloop()</pre>
+    <pre class="code-block">
+    PS C:\Users\Victor\Documents\GitHub\argparse_cmd_demo> & 'E:\Program Files\Python\Python37-32\python.exe' '2.py'
+    [Servers] create my_server Windows
+    Created server my_server; OS: Windows</pre>
+    <p>
+        Great, we can now interpret two arguments. However, if we were to add more arguments, the user
+        would need to remember the order of arguments, and it would be clumsy to unpack an array into a
+        large number of individual local variables. Additionally, this method of parsing arguments
+        doesn't support optional arguments cleanly. These are problems that the standard library
+        <span class="code">argparse</span> has solutions for. We can use
+        <span class="code">argparse.ArgumentParser</span> to scale the number of arguments in a
+        maintainable way, and support optional arguments at the same time.
+    </p>
+    <pre class="code-block">
+    import argparse
+    import cmd
 
-class ServerCmd(cmd.Cmd):
-    prompt = '[Servers] '
+    class ServerCmd(cmd.Cmd):
+        prompt = '[Servers] '
 
-    def do_create(self, arg):
-        parser = argparse.ArgumentParser(prog='create')
-        parser.add_argument('--name', help='server name', required=True)
-        parser.add_argument('--operating-system', help='operating system name', required=True)
-        args = parser.parse_args(arg.split())
+        def do_create(self, arg):
+            parser = argparse.ArgumentParser(prog='create')
+            parser.add_argument('--name', help='server name', required=True)
+            parser.add_argument('--operating-system', help='operating system name', required=True)
+            args = parser.parse_args(arg.split())
 
-        create_server(name=args.name, os=args.operating_system)
-        print(f"Created server {args.name}; OS: {args.operating_system}")
+            create_server(name=args.name, os=args.operating_system)
+            print(f"Created server {args.name}; OS: {args.operating_system}")
 
-    def do_delete(self, arg):
-        parser = argparse.ArgumentParser(prog='delete')
-        parser.add_argument('--name', help='server name', required=True)
-        args = parser.parse_args(arg.split())
+        def do_delete(self, arg):
+            parser = argparse.ArgumentParser(prog='delete')
+            parser.add_argument('--name', help='server name', required=True)
+            args = parser.parse_args(arg.split())
 
-        delete_server(name=args.name)
-        print(f"Deleted server {args.name}")
+            delete_server(name=args.name)
+            print(f"Deleted server {args.name}")
 
-    def do_exit(self, arg):
-        return True
+        def do_exit(self, arg):
+            return True
 
-def create_server(name, os):
-    pass
+    def create_server(name, os):
+        pass
 
-def delete_server(name):
-    pass
+    def delete_server(name):
+        pass
 
-if __name__ == '__main__':
-    ServerCmd().cmdloop()</pre>
-  <pre class="code-block">
-PS C:\Users\Victor\Documents\GitHub\argparse_cmd_demo> & 'E:\Program Files\Python\Python37-32\python.exe' '3.py'
-[Servers] create --name my_server --operating-system Windows
-Created server my_server; OS: Windows
-[Servers] delete --name my_server
-Deleted server my_server</pre>
-  <p>
-    At this point, you might be tempted to think that we're done, and that we can just use all
-    the features of <span class="code">argparse</span> to solve all our argument-parsing problems.
-    However, there are some issues with the above implementation. The first problem is that this
-    solution doesn't currently support spaces in arguments.
-  </p>
-  <pre class="code-block">
-PS C:\Users\Victor\Documents\GitHub\argparse_cmd_demo> & 'E:\Program Files\Python\Python37-32\python.exe' '3.py'
-[Servers] create --name my server --operating-system Windows
-usage: create [-h] [--name NAME] [--operating-system OPERATING_SYSTEM]
-create: error: unrecognized arguments: server
-PS C:\Users\Victor\Documents\GitHub\argparse_cmd_demo></pre>
-  <p>
-    Can fix this by wrapping <span class="code">my server</span>
-    between quotations, or by escaping the space with a backslach (<span class="code">\ </span>)?
-    No, because these are shell constructs. We are already inside a Python program, so the usual
-    space-escaping rules do not work in our program.
-  </p>
-  <p>
-    One way this can be fixed is to replicate the space-escaping behaviour that shells provide. I
-    chose not to do this because I didn't want to implement a shell feature in my CRUD. Instead, I
-    chose to specify <span class="code">nargs='+'</span> for any optional string arguments. By
-    default, <span class="code">ArgumentParser</span> parses such argument into a list of strings.
-    However, I just want one string as the argument (remember, we're parsing a name field). I chose
-    to accomplish this by implementing a custom
-    <a class="code" href="https://docs.python.org/3/library/argparse.html#argparse.Action">Action</a>.
-    Once we tell our <span class="code">ArgumentParser</span> to use this custom
-    <span class="code">Action</span>, we get the desired result: an argument with spaces in it.
-  </p>
-  <pre class="code-block">
-import argparse
-import cmd
+    if __name__ == '__main__':
+        ServerCmd().cmdloop()</pre>
+    <pre class="code-block">
+    PS C:\Users\Victor\Documents\GitHub\argparse_cmd_demo> & 'E:\Program Files\Python\Python37-32\python.exe' '3.py'
+    [Servers] create --name my_server --operating-system Windows
+    Created server my_server; OS: Windows
+    [Servers] delete --name my_server
+    Deleted server my_server</pre>
+    <p>
+        At this point, you might be tempted to think that we're done, and that we can just use all
+        the features of <span class="code">argparse</span> to solve all our argument-parsing problems.
+        However, there are some issues with the above implementation. The first problem is that this
+        solution doesn't currently support spaces in arguments.
+    </p>
+    <pre class="code-block">
+    PS C:\Users\Victor\Documents\GitHub\argparse_cmd_demo> & 'E:\Program Files\Python\Python37-32\python.exe' '3.py'
+    [Servers] create --name my server --operating-system Windows
+    usage: create [-h] [--name NAME] [--operating-system OPERATING_SYSTEM]
+    create: error: unrecognized arguments: server
+    PS C:\Users\Victor\Documents\GitHub\argparse_cmd_demo></pre>
+    <p>
+        Can fix this by wrapping <span class="code">my server</span>
+        between quotations, or by escaping the space with a backslach (<span class="code">\ </span>)?
+        No, because these are shell constructs. We are already inside a Python program, so the usual
+        space-escaping rules do not work in our program.
+    </p>
+    <p>
+        One way this can be fixed is to replicate the space-escaping behaviour that shells provide. I
+        chose not to do this because I didn't want to implement a shell feature in my CRUD. Instead, I
+        chose to specify <span class="code">nargs='+'</span> for any optional string arguments. By
+        default, <span class="code">ArgumentParser</span> parses such argument into a list of strings.
+        However, I just want one string as the argument (remember, we're parsing a name field). I chose
+        to accomplish this by implementing a custom
+        <a class="code" href="https://docs.python.org/3/library/argparse.html#argparse.Action">Action</a>.
+        Once we tell our <span class="code">ArgumentParser</span> to use this custom
+        <span class="code">Action</span>, we get the desired result: an argument with spaces in it.
+    </p>
+    <pre class="code-block">
+    import argparse
+    import cmd
 
-class JoinStringAction(argparse.Action):
-    def __call__(self, parser, namespace, values, option_string=None):
-        setattr(namespace, self.dest, ' '.join(values))
+    class JoinStringAction(argparse.Action):
+        def __call__(self, parser, namespace, values, option_string=None):
+            setattr(namespace, self.dest, ' '.join(values))
 
-class ServerCmd(cmd.Cmd):
-    prompt = '[Servers] '
+    class ServerCmd(cmd.Cmd):
+        prompt = '[Servers] '
 
-    def do_create(self, arg):
-        parser = argparse.ArgumentParser(prog='create')
-        parser.add_argument('--name', help='server name', required=True, nargs='+', action=JoinStringAction)
-        parser.add_argument('--operating-system', help='operating system name', required=True, nargs='+', action=JoinStringAction)
-        args = parser.parse_args(arg.split())
+        def do_create(self, arg):
+            parser = argparse.ArgumentParser(prog='create')
+            parser.add_argument('--name', help='server name', required=True, nargs='+', action=JoinStringAction)
+            parser.add_argument('--operating-system', help='operating system name', required=True, nargs='+', action=JoinStringAction)
+            args = parser.parse_args(arg.split())
 
-        create_server(name=args.name, os=args.operating_system)
-        print(f"Created server {args.name}; OS: {args.operating_system}")
+            create_server(name=args.name, os=args.operating_system)
+            print(f"Created server {args.name}; OS: {args.operating_system}")
 
-    def do_delete(self, arg):
-        parser = argparse.ArgumentParser(prog='delete')
-        parser.add_argument('--name', help='server name', required=True, nargs='+', action=JoinStringAction)
-        args = parser.parse_args(arg.split())
+        def do_delete(self, arg):
+            parser = argparse.ArgumentParser(prog='delete')
+            parser.add_argument('--name', help='server name', required=True, nargs='+', action=JoinStringAction)
+            args = parser.parse_args(arg.split())
 
-        delete_server(name=args.name)
-        print(f"Deleted server {args.name}")
+            delete_server(name=args.name)
+            print(f"Deleted server {args.name}")
 
-    def do_exit(self, arg):
-        return True
+        def do_exit(self, arg):
+            return True
 
-def create_server(name, os):
-    pass
+    def create_server(name, os):
+        pass
 
-def delete_server(name):
-    pass
+    def delete_server(name):
+        pass
 
-if __name__ == '__main__':
-    ServerCmd().cmdloop()</pre>
-  <pre class="code-block">
-PS C:\Users\Victor\Documents\GitHub\argparse_cmd_demo> & 'E:\Program Files\Python\Python37-32\python.exe' '4.py'
-[Servers] create --name my server --operating-system Windows
-Created server my server; OS: Windows
-[Servers] delete --name my server
-Deleted server my server</pre>
-  <p>
-    There's another issue in <span class="code">3_output_2</span>. Notice how the program exits to shell
-    after <span class="code">ArgumentParser</span> fails to parse the unknown argument.
-    <span class="code">ArgumentParser</span> does this by calling
-    <a href="https://github.com/python/cpython/blob/59f5022b5d3e5fcc60ac61cc256b627decf8ee68/Lib/argparse.py#L2576" class="code">sys.exit()</a>.
-    This makes sense for a program launched from a shell, but exiting to the shell doesn't make sense
-    in our interactive tool. We want for the user to be able to run other commands within the
-    <span class="code">cmd</span> loop after an error.
-    <a href="https://www.python.org/dev/peps/pep-0389/#discussion-sys-stderr-and-sys-exit">PEP 389</a>
-    addresses this, and says we should subclass <span class="code">ArgumentParser</span> and override
-    the <span class="code">error</span> method (1). Let's go ahead and do that.
-  </p>
-  <pre class="code-block">
-import argparse
-import cmd
-import sys
+    if __name__ == '__main__':
+        ServerCmd().cmdloop()</pre>
+    <pre class="code-block">
+    PS C:\Users\Victor\Documents\GitHub\argparse_cmd_demo> & 'E:\Program Files\Python\Python37-32\python.exe' '4.py'
+    [Servers] create --name my server --operating-system Windows
+    Created server my server; OS: Windows
+    [Servers] delete --name my server
+    Deleted server my server</pre>
+    <p>
+        There's another issue in <span class="code">3_output_2</span>. Notice how the program exits to shell
+        after <span class="code">ArgumentParser</span> fails to parse the unknown argument.
+        <span class="code">ArgumentParser</span> does this by calling
+        <a href="https://github.com/python/cpython/blob/59f5022b5d3e5fcc60ac61cc256b627decf8ee68/Lib/argparse.py#L2576" class="code">sys.exit()</a>.
+        This makes sense for a program launched from a shell, but exiting to the shell doesn't make sense
+        in our interactive tool. We want for the user to be able to run other commands within the
+        <span class="code">cmd</span> loop after an error.
+        <a href="https://www.python.org/dev/peps/pep-0389/#discussion-sys-stderr-and-sys-exit">PEP 389</a>
+        addresses this, and says we should subclass <span class="code">ArgumentParser</span> and override
+        the <span class="code">error</span> method (1). Let's go ahead and do that.
+    </p>
+    <pre class="code-block">
+    import argparse
+    import cmd
+    import sys
 
-class ArgumentParseException(Exception):
-    pass
+    class ArgumentParseException(Exception):
+        pass
 
-class JoinStringAction(argparse.Action):
-    def __call__(self, parser, namespace, values, option_string=None):
-        setattr(namespace, self.dest, ' '.join(values))
+    class JoinStringAction(argparse.Action):
+        def __call__(self, parser, namespace, values, option_string=None):
+            setattr(namespace, self.dest, ' '.join(values))
 
-class PrintOnErrorArgumentParser(argparse.ArgumentParser):
-    def error(self, message):
-        self.print_usage(sys.stderr)
-        raise ArgumentParseException(message)
+    class PrintOnErrorArgumentParser(argparse.ArgumentParser):
+        def error(self, message):
+            self.print_usage(sys.stderr)
+            raise ArgumentParseException(message)
 
-class ServerCmd(cmd.Cmd):
-    prompt = '[Servers] '
+    class ServerCmd(cmd.Cmd):
+        prompt = '[Servers] '
 
-    def do_create(self, arg):
+        def do_create(self, arg):
+            parser = PrintOnErrorArgumentParser(prog='create')
+            parser.add_argument('--name', help='server name', required=True, nargs='+', action=JoinStringAction)
+            parser.add_argument('--operating-system', help='operating system name', required=True, nargs='+', action=JoinStringAction)
+            try:
+                args = parser.parse_args(arg.split())
+            except ArgumentParseException:
+                return
+
+            create_server(name=args.name, os=args.operating_system)
+            print(f"Created server {args.name}; OS: {args.operating_system}")
+
+        def do_delete(self, arg):
+            parser = PrintOnErrorArgumentParser(prog='delete')
+            parser.add_argument('--name', help='server name', required=True, nargs='+', action=JoinStringAction)
+            try:
+                args = parser.parse_args(arg.split())
+            except ArgumentParseException:
+                return
+
+            delete_server(name=args.name)
+            print(f"Deleted server {args.name}")
+
+        def do_exit(self, arg):
+            return True
+
+    def create_server(name, os):
+        pass
+
+    def delete_server(name):
+        pass
+
+    if __name__ == '__main__':
+        ServerCmd().cmdloop()</pre>
+    <pre class="code-block">
+    PS C:\Users\Victor\Documents\GitHub\argparse_cmd_demo> & "E:/Program Files/Python/Python37-32/python.exe" c:/Users/Victor/Documents/GitHub/argparse_cmd_demo/5.py
+    [Servers] create 
+    usage: create [-h] --name NAME [NAME ...] --operating-system OPERATING_SYSTEM
+            [OPERATING_SYSTEM ...]</pre>
+    <p>
+        The user now sees a helpful error message when they input command arguments incorrectly. The
+        parameter description (<span class="code">NAME [NAME ...]</span>) looks a bit weird, but this is
+        the tradeoff for not having to re-implement space-escaping.
+    </p>
+    <p>
+        Another neat feature of <span class="code">cmd</span> is that <span class="code">cmd</span>
+        programs have a default command called <span class="code">help</span>, which displays help text
+        for commands within the program. We can use the argument parser that we wrote for each function
+        to display this help text. Let's extract the parser creation out to a function and use the parser
+        in the <span class="code">help</span> method.
+    </p>
+    <pre class="code-block">
+    import argparse
+    import cmd
+    import sys
+
+    class ArgumentParseException(Exception):
+        pass
+
+    class JoinStringAction(argparse.Action):
+        def __call__(self, parser, namespace, values, option_string=None):
+            setattr(namespace, self.dest, ' '.join(values))
+
+    class PrintOnErrorArgumentParser(argparse.ArgumentParser):
+        def error(self, message):
+            self.print_usage(sys.stderr)
+            raise ArgumentParseException(message)
+
+    def get_create_parser():
         parser = PrintOnErrorArgumentParser(prog='create')
         parser.add_argument('--name', help='server name', required=True, nargs='+', action=JoinStringAction)
         parser.add_argument('--operating-system', help='operating system name', required=True, nargs='+', action=JoinStringAction)
-        try:
-            args = parser.parse_args(arg.split())
-        except ArgumentParseException:
-            return
+        return parser
 
-        create_server(name=args.name, os=args.operating_system)
-        print(f"Created server {args.name}; OS: {args.operating_system}")
-
-    def do_delete(self, arg):
+    def get_delete_parser():
         parser = PrintOnErrorArgumentParser(prog='delete')
         parser.add_argument('--name', help='server name', required=True, nargs='+', action=JoinStringAction)
-        try:
-            args = parser.parse_args(arg.split())
-        except ArgumentParseException:
-            return
+        return parser
 
-        delete_server(name=args.name)
-        print(f"Deleted server {args.name}")
+    class ServerCmd(cmd.Cmd):
+        prompt = '[Servers] '
 
-    def do_exit(self, arg):
-        return True
+        def do_create(self, arg):
+            try:
+                args = get_create_parser().parse_args(arg.split())
+            except ArgumentParseException:
+                return
 
-def create_server(name, os):
-    pass
+            create_server(name=args.name, os=args.operating_system)
+            print(f"Created server {args.name}; OS: {args.operating_system}")
 
-def delete_server(name):
-    pass
+        def help_create(self):
+            get_create_parser().print_help()
 
-if __name__ == '__main__':
-    ServerCmd().cmdloop()</pre>
-  <pre class="code-block">
-PS C:\Users\Victor\Documents\GitHub\argparse_cmd_demo> & "E:/Program Files/Python/Python37-32/python.exe" c:/Users/Victor/Documents/GitHub/argparse_cmd_demo/5.py
-[Servers] create 
-usage: create [-h] --name NAME [NAME ...] --operating-system OPERATING_SYSTEM
-          [OPERATING_SYSTEM ...]</pre>
-  <p>
-    The user now sees a helpful error message when they input command arguments incorrectly. The
-    parameter description (<span class="code">NAME [NAME ...]</span>) looks a bit weird, but this is
-    the tradeoff for not having to re-implement space-escaping.
-  </p>
-  <p>
-    Another neat feature of <span class="code">cmd</span> is that <span class="code">cmd</span>
-    programs have a default command called <span class="code">help</span>, which displays help text
-    for commands within the program. We can use the argument parser that we wrote for each function
-    to display this help text. Let's extract the parser creation out to a function and use the parser
-    in the <span class="code">help</span> method.
-  </p>
-  <pre class="code-block">
-import argparse
-import cmd
-import sys
+        def do_delete(self, arg):
+            try:
+                args = get_delete_parser().parse_args(arg.split())
+            except ArgumentParseException:
+                return
 
-class ArgumentParseException(Exception):
-    pass
+            delete_server(name=args.name)
+            print(f"Deleted server {args.name}")
 
-class JoinStringAction(argparse.Action):
-    def __call__(self, parser, namespace, values, option_string=None):
-        setattr(namespace, self.dest, ' '.join(values))
+        def help_delete(self):
+            get_delete_parser().print_help()
 
-class PrintOnErrorArgumentParser(argparse.ArgumentParser):
-    def error(self, message):
-        self.print_usage(sys.stderr)
-        raise ArgumentParseException(message)
+        def do_exit(self, arg):
+            return True
 
-def get_create_parser():
-    parser = PrintOnErrorArgumentParser(prog='create')
-    parser.add_argument('--name', help='server name', required=True, nargs='+', action=JoinStringAction)
-    parser.add_argument('--operating-system', help='operating system name', required=True, nargs='+', action=JoinStringAction)
-    return parser
+    def create_server(name, os):
+        pass
 
-def get_delete_parser():
-    parser = PrintOnErrorArgumentParser(prog='delete')
-    parser.add_argument('--name', help='server name', required=True, nargs='+', action=JoinStringAction)
-    return parser
+    def delete_server(name):
+        pass
 
-class ServerCmd(cmd.Cmd):
-    prompt = '[Servers] '
+    if __name__ == '__main__':
+        ServerCmd().cmdloop()</pre>
+    <pre class="code-block">
+    PS C:\Users\Victor\Documents\GitHub\argparse_cmd_demo> & "E:/Program Files/Python/Python37-32/python.exe" c:/Users/Victor/Documents/GitHub/argparse_cmd_demo/6.py
+    [Servers] help create
+    usage: create [-h] --name NAME [NAME ...] --operating-system OPERATING_SYSTEM
+                [OPERATING_SYSTEM ...]
 
-    def do_create(self, arg):
-        try:
-            args = get_create_parser().parse_args(arg.split())
-        except ArgumentParseException:
-            return
-
-        create_server(name=args.name, os=args.operating_system)
-        print(f"Created server {args.name}; OS: {args.operating_system}")
-
-    def help_create(self):
-        get_create_parser().print_help()
-
-    def do_delete(self, arg):
-        try:
-            args = get_delete_parser().parse_args(arg.split())
-        except ArgumentParseException:
-            return
-
-        delete_server(name=args.name)
-        print(f"Deleted server {args.name}")
-
-    def help_delete(self):
-        get_delete_parser().print_help()
-
-    def do_exit(self, arg):
-        return True
-
-def create_server(name, os):
-    pass
-
-def delete_server(name):
-    pass
-
-if __name__ == '__main__':
-    ServerCmd().cmdloop()</pre>
-  <pre class="code-block">
-PS C:\Users\Victor\Documents\GitHub\argparse_cmd_demo> & "E:/Program Files/Python/Python37-32/python.exe" c:/Users/Victor/Documents/GitHub/argparse_cmd_demo/6.py
-[Servers] help create
-usage: create [-h] --name NAME [NAME ...] --operating-system OPERATING_SYSTEM
-              [OPERATING_SYSTEM ...]
-
-optional arguments:
-  -h, --help            show this help message and exit
-  --name NAME [NAME ...]
-                        server name
-  --operating-system OPERATING_SYSTEM [OPERATING_SYSTEM ...]
-                        operating system name</pre>
-  <p>
-    If you're familiar with <span class="code">argparse</span> you might be wondering why I bothered
-    to write this code just to print some help text. By default, all
-    <span class="code">ArgumentParser</span>s have a default option <span class="code">--help</span>
-    which prints the same text without needing to call <span class="code">print_help</span> manually.
-    Let's see what happens if we try to use invoke <span class="code">create</span> with the
-    <span class="code">--help</span> option.
-  </p>
-  <pre class="code-block">
-PS C:\Users\Victor\Documents\GitHub\argparse_cmd_demo> & "E:/Program Files/Python/Python37-32/python.exe" c:/Users/Victor/Documents/GitHub/argparse_cmd_demo/6.py
-[Servers] create --help
-usage: create [-h] --name NAME [NAME ...] --operating-system OPERATING_SYSTEM
-              [OPERATING_SYSTEM ...]
-
-optional arguments:
-  -h, --help            show this help message and exit
-  --name NAME [NAME ...]
-                        server name
-  --operating-system OPERATING_SYSTEM [OPERATING_SYSTEM ...]
-                        operating system name
-PS C:\Users\Victor\Documents\GitHub\argparse_cmd_demo>
-  </pre>
-  <p>
-    Using <span class="code">--help</span> exits the program; this should seem familiar. Indeed,
-    the <span class="code">--help</span> flag also results in a
-    <a href="https://github.com/python/cpython/blob/59f5022b5d3e5fcc60ac61cc256b627decf8ee68/Lib/argparse.py#L1092-L1094" class="code">sys.exit()</a>!
-    We'll need to implement our own <span class="code">--help</span> if we want to
-    prevent the program from exiting. To prevent the body of our program from having to deal
-    with argument parsing and handling, let's implement a custom <span class="code">Action</span>
-    again. This new <span class="code">Action</span> will mimic the behaviour of the existing help
-    flag, but only raise an exception, not terminate the whole program.
-  </p>
-  <pre class="code-block">
-import argparse
-import cmd
-import sys
-
-class ArgumentParseException(Exception):
-    pass
-
-class JoinStringAction(argparse.Action):
-    def __call__(self, parser, namespace, values, option_string=None):
-        setattr(namespace, self.dest, ' '.join(values))
-
-class HelpAction(argparse.Action):
-    def __init__(self, option_strings, dest=argparse.SUPPRESS, default=argparse.SUPPRESS, help=None):
-        super(HelpAction, self).__init__(
-            option_strings=option_strings, dest=dest, default=default, nargs=0, help=help,
-        )
-
-    def __call__(self, parser, namespace, values, option_string=None):
-        parser.print_help()
-        raise ArgumentParseException("A help flag was passed")
-
-class PrintOnErrorArgumentParser(argparse.ArgumentParser):
-    def error(self, message):
-        self.print_usage(sys.stderr)
-        raise ArgumentParseException(message)
-
-def get_create_parser():
-    parser = PrintOnErrorArgumentParser(prog='create', add_help=False)
-    parser.add_argument('-h', '--help', help='', action=HelpAction)
-    parser.add_argument('--name', help='server name', required=True, nargs='+', action=JoinStringAction)
-    parser.add_argument('--operating-system', help='operating system name', required=True, nargs='+', action=JoinStringAction)
-    return parser
-
-def get_delete_parser():
-    parser = PrintOnErrorArgumentParser(prog='delete', add_help=False)
-    parser.add_argument('-h', '--help', help='', action=HelpAction)
-    parser.add_argument('--name', help='server name', required=True, nargs='+', action=JoinStringAction)
-    return parser
-
-class ServerCmd(cmd.Cmd):
-    prompt = '[Servers] '
-
-    def do_create(self, arg):
-        try:
-            args = get_create_parser().parse_args(arg.split())
-        except ArgumentParseException:
-            return
-
-        create_server(name=args.name, os=args.operating_system)
-        print(f"Created server {args.name}; OS: {args.operating_system}")
-
-    def help_create(self):
-        get_create_parser().print_help()
-
-    def do_delete(self, arg):
-        try:
-            args = get_delete_parser().parse_args(arg.split())
-        except ArgumentParseException:
-            return
-
-        delete_server(name=args.name)
-        print(f"Deleted server {args.name}")
-
-    def help_delete(self):
-        get_delete_parser().print_help()
-
-    def do_exit(self, arg):
-        return True
-
-def create_server(name, os):
-    pass
-
-def delete_server(name):
-    pass
-
-if __name__ == '__main__':
-    ServerCmd().cmdloop()</pre>
-  <pre class="code-block">
-    PS C:\Users\Victor\Documents\GitHub\argparse_cmd_demo> & "E:/Program Files/Python/Python37-32/python.exe" c:/Users/Victor/Documents/GitHub/argparse_cmd_demo/7.py
+    optional arguments:
+    -h, --help            show this help message and exit
+    --name NAME [NAME ...]
+                            server name
+    --operating-system OPERATING_SYSTEM [OPERATING_SYSTEM ...]
+                            operating system name</pre>
+    <p>
+        If you're familiar with <span class="code">argparse</span> you might be wondering why I bothered
+        to write this code just to print some help text. By default, all
+        <span class="code">ArgumentParser</span>s have a default option <span class="code">--help</span>
+        which prints the same text without needing to call <span class="code">print_help</span> manually.
+        Let's see what happens if we try to use invoke <span class="code">create</span> with the
+        <span class="code">--help</span> option.
+    </p>
+    <pre class="code-block">
+    PS C:\Users\Victor\Documents\GitHub\argparse_cmd_demo> & "E:/Program Files/Python/Python37-32/python.exe" c:/Users/Victor/Documents/GitHub/argparse_cmd_demo/6.py
     [Servers] create --help
     usage: create [-h] --name NAME [NAME ...] --operating-system OPERATING_SYSTEM
-                  [OPERATING_SYSTEM ...]
-    
+                [OPERATING_SYSTEM ...]
+
     optional arguments:
-      -h, --help
-      --name NAME [NAME ...]
+    -h, --help            show this help message and exit
+    --name NAME [NAME ...]
                             server name
-      --operating-system OPERATING_SYSTEM [OPERATING_SYSTEM ...]
+    --operating-system OPERATING_SYSTEM [OPERATING_SYSTEM ...]
                             operating system name
-    [Servers]</pre>
-  <p>
-    And with that, we have implemented a <span class="code">cmd</span>-based interpreter that
-    interprets user input using the <span class="code">argparse</span> library. If I discover any
-    other weird results of using <span class="code">argparse</span> within a cmd-based interpreter,
-    I will be sure to make a followup post.
-  </p>
+    PS C:\Users\Victor\Documents\GitHub\argparse_cmd_demo>
+    </pre>
+    <p>
+        Using <span class="code">--help</span> exits the program; this should seem familiar. Indeed,
+        the <span class="code">--help</span> flag also results in a
+        <a href="https://github.com/python/cpython/blob/59f5022b5d3e5fcc60ac61cc256b627decf8ee68/Lib/argparse.py#L1092-L1094" class="code">sys.exit()</a>!
+        We'll need to implement our own <span class="code">--help</span> if we want to
+        prevent the program from exiting. To prevent the body of our program from having to deal
+        with argument parsing and handling, let's implement a custom <span class="code">Action</span>
+        again. This new <span class="code">Action</span> will mimic the behaviour of the existing help
+        flag, but only raise an exception, not terminate the whole program.
+    </p>
+    <pre class="code-block">
+    import argparse
+    import cmd
+    import sys
+
+    class ArgumentParseException(Exception):
+        pass
+
+    class JoinStringAction(argparse.Action):
+        def __call__(self, parser, namespace, values, option_string=None):
+            setattr(namespace, self.dest, ' '.join(values))
+
+    class HelpAction(argparse.Action):
+        def __init__(self, option_strings, dest=argparse.SUPPRESS, default=argparse.SUPPRESS, help=None):
+            super(HelpAction, self).__init__(
+                option_strings=option_strings, dest=dest, default=default, nargs=0, help=help,
+            )
+
+        def __call__(self, parser, namespace, values, option_string=None):
+            parser.print_help()
+            raise ArgumentParseException("A help flag was passed")
+
+    class PrintOnErrorArgumentParser(argparse.ArgumentParser):
+        def error(self, message):
+            self.print_usage(sys.stderr)
+            raise ArgumentParseException(message)
+
+    def get_create_parser():
+        parser = PrintOnErrorArgumentParser(prog='create', add_help=False)
+        parser.add_argument('-h', '--help', help='', action=HelpAction)
+        parser.add_argument('--name', help='server name', required=True, nargs='+', action=JoinStringAction)
+        parser.add_argument('--operating-system', help='operating system name', required=True, nargs='+', action=JoinStringAction)
+        return parser
+
+    def get_delete_parser():
+        parser = PrintOnErrorArgumentParser(prog='delete', add_help=False)
+        parser.add_argument('-h', '--help', help='', action=HelpAction)
+        parser.add_argument('--name', help='server name', required=True, nargs='+', action=JoinStringAction)
+        return parser
+
+    class ServerCmd(cmd.Cmd):
+        prompt = '[Servers] '
+
+        def do_create(self, arg):
+            try:
+                args = get_create_parser().parse_args(arg.split())
+            except ArgumentParseException:
+                return
+
+            create_server(name=args.name, os=args.operating_system)
+            print(f"Created server {args.name}; OS: {args.operating_system}")
+
+        def help_create(self):
+            get_create_parser().print_help()
+
+        def do_delete(self, arg):
+            try:
+                args = get_delete_parser().parse_args(arg.split())
+            except ArgumentParseException:
+                return
+
+            delete_server(name=args.name)
+            print(f"Deleted server {args.name}")
+
+        def help_delete(self):
+            get_delete_parser().print_help()
+
+        def do_exit(self, arg):
+            return True
+
+    def create_server(name, os):
+        pass
+
+    def delete_server(name):
+        pass
+
+    if __name__ == '__main__':
+        ServerCmd().cmdloop()</pre>
+    <pre class="code-block">
+        PS C:\Users\Victor\Documents\GitHub\argparse_cmd_demo> & "E:/Program Files/Python/Python37-32/python.exe" c:/Users/Victor/Documents/GitHub/argparse_cmd_demo/7.py
+        [Servers] create --help
+        usage: create [-h] --name NAME [NAME ...] --operating-system OPERATING_SYSTEM
+                    [OPERATING_SYSTEM ...]
+        
+        optional arguments:
+        -h, --help
+        --name NAME [NAME ...]
+                                server name
+        --operating-system OPERATING_SYSTEM [OPERATING_SYSTEM ...]
+                                operating system name
+        [Servers]</pre>
+    <p>
+        And with that, we have implemented a <span class="code">cmd</span>-based interpreter that
+        interprets user input using the <span class="code">argparse</span> library. If I discover any
+        other weird results of using <span class="code">argparse</span> within a cmd-based interpreter,
+        I will be sure to make a followup post.
+    </p>
+    <hr />
+    <ol style="list-style-type: none;">
+        <li>
+        (1) I'm kind of curious if "if this turns out to be a common need." has turned out to be true.
+        Maybe I'll write a followup post on this topic.
+        </li>
+    </ol>
+  </main>
   <hr />
-  <ol style="list-style-type: none;">
-    <li>
-      (1) I'm kind of curious if "if this turns out to be a common need." has turned out to be true.
-      Maybe I'll write a followup post on this topic.
-    </li>
-  </ol>
-  <hr />
-  <div class="links-footer">
+  <footer>
     <a href="index.html">Python notes</a>
     <a href="../index.html">Home</a>
-  </div>
+  </footer>
 </body>
