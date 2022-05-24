@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <title lang="en">Difficulty with DoorDash Receipts and Reimbursement</title>
+  <link rel="icon" type="image/png" href="https://s3.ca-central-1.amazonaws.com/victorzhoudev.media/img/icon.png">
+  <link rel="stylesheet" href="../css/css.css?v=2022-05-16">
+</head>
+<body lang="en" class="prose">
+  <header>
+    <h1>Difficulty with DoorDash Receipts and Reimbursement</h1>
+    <p class="subtitle">Written May 2022</p>
+  </header>
+  <hr />
+  <main>
+    <p>
+      I had an engineering org all-hands meeting for which I could expense a meal.
+      I wanted some Cantonese food but there are no such restaurants within walking distance,
+      so I ordered my meal via DoorDash. The food came and it was great; now, I need to get
+      reimbursed by my company. Let me just pull up the receipt from the DoorDash app...
+    </p>
+    <div style="display:flex;justify-content:center;">
+    <img
+      src="https://s3.ca-central-1.amazonaws.com/victorzhoudev.media/img/doordash_receipts/Image+from+iOS.png"
+      alt="DoorDash receipt showing the date as &quot;Today at 12:08 PM&quot;"
+      style="max-height: 40em;"
+      loading="lazy" />
+    </div>
+    <p>
+      The problem here is that the date on this receipt is shown as "Today at 12:08 PM."
+      This is not a date that is acceptable to the IRS for a reimbursement, so my company will not
+      reimburse me for my meal using this receipt.
+    </p>
+    <p>
+      My solution has been to wait until the next day to generate a receipt. This way, Doordash's
+      receipt template recognizes that the day has passed and doesn't change "2022/05/24" to "Today".
+    </p>
+    <p>
+      I would love if DoorDash didn't use this human-friendly date formatting in a document that
+      some may use in a legal reimbursement context.
+    </p>
+  </main>
+  <hr />
+  <footer>
+    <a href="index.html">Rants</a>
+    <a href="../index.html">Home</a>
+  </footer>
+</body>
