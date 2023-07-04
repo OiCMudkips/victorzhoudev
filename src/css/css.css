@@ -33,3 +33,6 @@ body {
 .gist-data {
   max-height: 400px;
 }
+ul, ol {
+  list-style-position: inside;
+}
