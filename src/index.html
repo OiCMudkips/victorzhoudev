@@ -33,16 +33,49 @@
         <input type="submit" id="submit" value="Search" />
         <span>(Opens <a href="https://searchmysite.net/">external site</a> in the current tab)</span>
       </form>
+      <div id="search-results" style="display: none;"></div>
       <script type="text/javascript">
-        function onSubmit(event) {
+        function showResults(results) {
+          const resultsDiv = document.getElementById("search-results");
+          resultsDiv.textContent = "";
+          resultsDiv.style = "";
+
+          if (!results) {
+            resultsDiv.innerText = "No results found.";
+          } else {
+            const searchResultsList = document.createElement("ol");
+            resultsDiv.appendChild(searchResultsList);
+            results.map((result) => {
+              const listItem = document.createElement("li"), link = document.createElement("a");
+              link.innerText = result.title;
+              link.href = result.url;
+              listItem.appendChild(link);
+              searchResultsList.appendChild(listItem);
+            });
+          }
+        }
+
+        async function searchMySite(query) {
+          const api = `https://searchmysite.net/api/v1/search/victorzhou.dev?q=${query}`;
+          const rawResponse = await fetch(api);
+          const response = await rawResponse.json();
+          if (!response || !response.results) {
+            return [];
+          }
+
+          return response.results;
+        }
+
+        async function onSubmit(event) {
           event.preventDefault();
           const query = new FormData(event.target).get("query");
           if (!query) {
             return false;
           }
 
-          const searchUrl = "https://searchmysite.net/search/?q=domain:victorzhou.dev " + query;
-          window.open(searchUrl, "_self");
+          const results = await searchMySite(query);
+          showResults(results);
+
           return false;
         }
 
