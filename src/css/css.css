@@ -14,7 +14,7 @@ body {
   text-align: center;
 }
 #logos img {
-  width: 3em;
+  height: 3em;
 }
 .grid-reset > * {
   margin: 0px;
