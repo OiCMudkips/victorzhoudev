@@ -11,16 +11,11 @@
   <h1>Victor Zhou</h1>
   <img src="https://s3.ca-central-1.amazonaws.com/victorzhoudev.media/img/Icon+-+300x300.jpg" style="border:0.1rem solid black; padding: 0; max-width: 300px;" alt="Cartoon icon of Victor Zhou" title="Illustration of Victor Zhou by @supernovalesIie" />
   <p>I'm a Software Engineer at Clever!</p>
-    <h2>Content</h2>
+    <h2>Newest posts</h2>
     <ol>
       <li>(November 2022) <a href="rants/n_good_musicals.html"><span class="math">n</span> good musicals</a></li>
       <li>(August 2022) <a href="rants/form5444.html">My experience with FS Form 5444</a></li>
       <li>(May 2022) <a href="rants/doordash_shitty_receipts.html">Difficulty with DoorDash Receipts and Reimbursement</a></li>
-      <li>(May 2022) <a href="travels/a_photo_a_trip_2019.html">A Photo a Trip (2019 edition)</a></li>
-      <li>(September 2020) <a href="jp_language_stuff/code_geass_episode_25.html">Ruining a line in translation: Code Geass R2 episode 25</a></li>
-      <li>(May 2020) <a href="python/argparse_and_cmd.html">Using <span class="code">argparse</span> and <span class="code">cmd</span> together</a></li>
-      <li>(February 2020) <a href="transit/saturdays.html">Saturdays</a></li>
-      <li>(December 2019) <a href="jp_language_stuff/glad_youre_evil.html">I'm glad you're evil too (<span lang="ja">きみも悪い人でよかった</span>)</a></li>
     </ol>
     <h2>Content by Category</h2>
     <ul>
@@ -30,6 +25,31 @@
       <li><a href="./travels/index.html">Travels</a></li>
       <li><a href="./rants/index.html">Rants</a></li>
     </ul>
+    <h2>Search</h2>
+    <div>
+      <form id="search-form">
+        <label for="query">Search query:</label>
+        <input type="text" id="query" name="query" />
+        <input type="submit" id="submit" value="Search" />
+        <span>(Opens <a href="https://searchmysite.net/">external site</a> in the current tab)</span>
+      </form>
+      <script type="text/javascript">
+        function onSubmit(event) {
+          event.preventDefault();
+          const query = new FormData(event.target).get("query");
+          if (!query) {
+            return false;
+          }
+
+          const searchUrl = "https://searchmysite.net/search/?q=domain:victorzhou.dev " + query;
+          window.open(searchUrl, "_self");
+          return false;
+        }
+
+        const form = document.getElementById("search-form");
+        form.addEventListener("submit", onSubmit);
+      </script>
+    </div>
     <div>
       <h2>Contact</h2>
       <div id="logos">
