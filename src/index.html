@@ -45,6 +45,9 @@
             const searchResultsList = document.createElement("ol");
             resultsDiv.appendChild(searchResultsList);
             results.map((result) => {
+              if (!result.url.endswith(".html")) {
+                return;
+              }
               const listItem = document.createElement("li"), link = document.createElement("a");
               link.innerText = result.title;
               link.href = result.url;
