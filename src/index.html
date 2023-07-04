@@ -40,7 +40,7 @@
           resultsDiv.textContent = "";
           resultsDiv.style = "";
 
-          if (!results) {
+          if (!results || results.length === 0) {
             resultsDiv.innerText = "No results found.";
           } else {
             const searchResultsList = document.createElement("ol");
