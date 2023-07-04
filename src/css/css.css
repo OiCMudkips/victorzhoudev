@@ -13,7 +13,7 @@ body {
   font-family: "Courier New", monospace;
   text-align: center;
 }
-#logos > a > img {
+#logos img {
   width: 3em;
 }
 .grid-reset > * {
