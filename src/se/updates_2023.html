@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="Patch notes for victorzhou.dev April 2023">
+  <title lang="en">victorzhou.dev Updates April 2023</title>
+  <link rel="icon" type="image/png" href="https://cdn.victorzhou.dev/victorzhoudev.media/img/icon.png">
+  <link rel="stylesheet" href="../css/css.css?v=2022-11-01">
+</head>
+<body lang="en" class="prose">
+  <header>
+    <h1>victorzhou.dev Updates April 2023</h1>
+    <p class="subtitle">Written <time datetime="2023-04">April 2023</time></p>
+  </header>
+  <hr />
+  <main>
+    <p>
+      I recently made some changes to the website. I decided to write about them to help others
+      do something similar on their personal static websites.
+    </p>
+    <h2>Search bar</h2>
+    <p>
+      I added a search bar to the home page of victorzhou.dev. This site is indexed by
+      <a href="https://searchmysite.net/">Search My Site</a>. Search My Site indexes my website
+      for me, and provides an API for me to implement a search bar on my own domain. The code for
+      the search bar is just in a <span class="code">&lt;script&gt;</span> tag, and can be found
+      <a href="https://github.com/OiCMudkips/victorzhoudev/blob/8fefa7b0276b1885da878cbe9504dae1df0e048d/src/index.html#L36-L86">here</a>.
+      Search My Site has a very helpful <a href="https://blog.searchmysite.net/posts/adding-a-simple-search-page-to-my-personal-website-with-searchmysite.net/">blog post</a> which I used to start writing this.
+    </p>
+    <p>
+      I did also have to update some of the paths on my site to make the search more useful. The
+      search was returning some of the category pages on my site
+      (such as <a class="code" href="https://www.victorzhou.dev/transit/">/transit/index.html</a>),
+      so a search for any word in an article title would return up to 2 extra links: a link to the
+      category page, and a link to the home page, if the article was linked to on the home page.
+    </p>
+    <p>
+      I fixed this by taking advantage of how Apache serves <span class="code">index.html</span>
+      if no file name is specified. I've updated links to category pages and the home page to
+      not link to a <span class="code">index.html</span> URL. For example, the footer for this article
+      might have previously looked like this
+    </p>
+    <pre class="code-block">
+&lt;footer&gt;
+  &lt;a href="./index.html"&gt;Programming notes&lt;/a&gt;
+  &lt;a href="../index.html"&gt;Home&lt;/a&gt;
+&lt;/footer&gt;</pre>
+    <p>
+      Now, it looks like this:
+    </p>
+    <pre class="code-block">
+&lt;footer&gt;
+  &lt;a href="./"&gt;Programming notes&lt;/a&gt;
+  &lt;a href="../"&gt;Home&lt;/a&gt;
+&lt;/footer&gt;</pre>
+    <p>
+      This makes it so that Search My Site indexes the category pages without an <span class="code">.html</span> URL.
+      The article pages are still indexed with an <span class="code">.html</span> URL. This means
+      that the search can just filter for html URLs. This is done by just filtering
+      out non-HTML urls in the frontend (<a href="https://github.com/OiCMudkips/victorzhoudev/blob/8fefa7b0276b1885da878cbe9504dae1df0e048d/src/index.html#L48-L50">code</a>).
+      However, writing this article, I discovered that Search
+      My Site will allows developers to filter URLs too, so I will update the search query
+      to take advantage of this soon™ (actually immediately, I'm going to do it in the next commit).
+    </p>
+  </main>
+  <hr />
+  <footer>
+    <a href="./">Programming notes</a>
+    <a href="../">Home</a>
+  </footer>
+</body>
