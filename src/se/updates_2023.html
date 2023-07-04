@@ -26,10 +26,11 @@
       <a href="https://github.com/OiCMudkips/victorzhoudev/blob/8fefa7b0276b1885da878cbe9504dae1df0e048d/src/index.html#L36-L86">here</a>.
       Search My Site has a very helpful <a href="https://blog.searchmysite.net/posts/adding-a-simple-search-page-to-my-personal-website-with-searchmysite.net/">blog post</a> which I used to start writing this.
     </p>
+    <h3>Filtering out category pages</h3>
     <p>
       I did also have to update some of the paths on my site to make the search more useful. The
       search was returning some of the category pages on my site
-      (such as <a class="code" href="https://www.victorzhou.dev/transit/">/transit/index.html</a>),
+      (such as <span class="code">/transit/index.html</span>),
       so a search for any word in an article title would return up to 2 extra links: a link to the
       category page, and a link to the home page, if the article was linked to on the home page.
     </p>
@@ -59,8 +60,56 @@
       out non-HTML urls in the frontend (<a href="https://github.com/OiCMudkips/victorzhoudev/blob/8fefa7b0276b1885da878cbe9504dae1df0e048d/src/index.html#L48-L50">code</a>).
       However, writing this article, I discovered that Search
       My Site will allows developers to filter URLs too, so I will update the search query
-      to take advantage of this soon™ (actually immediately, I'm going to do it in the next commit).
+      to take advantage of this immediately. As in, it will already be live, and here is the
+      <a href="https://github.com/OiCMudkips/victorzhoudev/commit/566da7445ebb84c6980d62241c7bf0d8d735f796">commit</a>.
     </p>
+    <h3>Testing in production</h3>
+    <p>
+      It was hard for me to test the search functionality locally, as Search My Site
+      <a href="https://github.com/searchmysite/searchmysite.net/blob/4cc2ed15e623e00eba6a70bc28ed45768d6eb1ab/src/web/content/dynamic/searchmysite/api/searchapi.py#L102-L113">only allows</a>
+      the domain being searched to access the API in a fetch request. The code seems to try
+      to enable localhost testing, but it didn't work for me. Maybe I'm misinterpreting what line 105
+      is trying to accomplish. As a result, while testing locally, all I could do was click the button
+      and see what the blocked GET request looked like. This wasn't effective at ensuring that search
+      results were rendered correctly. As a result, I had to do deploy the website and test on
+      victorzhou.dev. My hosting provider seems to cache my website for me, so sometimes I would need
+      to wait a minute or two to test changes.
+    </p>
+    <h2>Setting up Gcore CDN</h2>
+    <p>
+      I wanted to set up a CDN for the images on this site. Previously, images were served directly
+      from S3 with an S3 url, but it felt cleaner to serve assets from a
+      <span class="code">victorzhou.dev</span> URL. There are also performance advantages with a CDN,
+      but these were just a bonus for me, as I don't think there is particularly high load to this
+      website.
+    </p>
+    <p>
+      I didn't want to use an Amazon CDN or Cloudflare for personal reasons. I just searched
+      for free CDNs and I ended up on Gcore. I liked that they were based in the EU, and were
+      therefore subject to probably-better privacy laws than other jurisdictions.
+    </p>
+    <p>
+      The setup turned out to be really straight-forward. This is the
+      <a href="https://gcore.com/support/articles/213969429/">guide</a> I used.
+      You just set up a CDN resource in Gcore, point it to your S3 bucket, and set up a CNAME record.
+      It even sets up https on the CDN subdomain you configure automatically.
+    </p>
+    <p>
+      It did take some time for the CNAME records to propogate so that the Let's Encrypt certificate
+      could be created. The UI does warn you about this, but I saw a number of different error messages
+      during the process, so I got confused and restarted the certificate generation in the UI
+      a couple of times. It was pretty low effort to click "cancel" then "generate" though,
+      so no big deal. I could have avoided this "problem" by just waiting for the DNS to propogate
+      properly.
+    </p>
+    <p>
+      Here's what the pageload waterfall for my homepage looks like with Gcore CDN serving the
+      image assets. It looks fine to me. I did probably warm up the CDN by trying to get this
+      waterfall screenshot. For reference, I am located in Seattle, USA with fiber internet.
+    </p>
+    <img
+      src="https://cdn.victorzhou.dev/victorzhoudev.media/img/updates_2023/waterfall.PNG"
+      alt="Chrome web developer page load waterfall. Images loaded in less than 80ms." />
   </main>
   <hr />
   <footer>
