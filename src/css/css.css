@@ -1,10 +1,13 @@
 body > * {
   display: block;
-  margin: auto;
-  max-width: 600px;
+  margin: auto auto 0.5em auto;
+  max-width: 800px;
+}
+body.prose > * {
+  text-align: left;
 }
 body > img {
-  padding: 10px;
+  padding: 0.5em;
 }
 body {
   font-family: "Courier New", monospace;
@@ -12,4 +15,7 @@ body {
 }
 #logos > a > img {
   width: 3em;
+}
+.grid-reset > * {
+  margin: 0px;
 }
