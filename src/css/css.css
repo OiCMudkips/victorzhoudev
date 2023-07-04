@@ -1,0 +1,15 @@
+body > * {
+  display: block;
+  margin: auto;
+  max-width: 600px;
+}
+body > img {
+  padding: 10px;
+}
+body {
+  font-family: "Courier New", monospace;
+  text-align: center;
+}
+#logos > a > img {
+  width: 3em;
+}
