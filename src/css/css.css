@@ -3,6 +3,9 @@ body > * {
   margin: auto auto 0.5em auto;
   max-width: 800px;
 }
+header > * {
+  margin: auto auto 0.5em auto;
+}
 body.prose > * {
   text-align: left;
 }
