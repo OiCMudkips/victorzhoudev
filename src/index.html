@@ -45,9 +45,6 @@
             const searchResultsList = document.createElement("ol");
             resultsDiv.appendChild(searchResultsList);
             results.map((result) => {
-              if (!result.url.endsWith(".html")) {
-                return;
-              }
               const listItem = document.createElement("li"), link = document.createElement("a");
               link.innerText = result.title;
               link.href = result.url;
@@ -58,7 +55,7 @@
         }
 
         async function searchMySite(query) {
-          const api = `https://searchmysite.net/api/v1/search/victorzhou.dev?q=${query}`;
+          const api = `https://searchmysite.net/api/v1/search/victorzhou.dev?q=%2b${query} %2burl:*.html`;
           const rawResponse = await fetch(api);
           const response = await rawResponse.json();
           if (!response || !response.results) {
