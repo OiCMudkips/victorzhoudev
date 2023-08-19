@@ -19,12 +19,14 @@ def generate_feed():
 
     generate_jp_entries(fg)
     generate_rants_entries(fg)
+    generate_transit_entries(fg)
 
     if os.environ.get("RSS_OUTPUT_PATH"):
         fg.rss_file(os.environ["RSS_OUTPUT_PATH"])
     
     if os.environ.get("ATOM_OUTPUT_PATH"):
         fg.atom_file(os.environ["ATOM_OUTPUT_PATH"])
+
 
 def generate_jp_entries(fg: FeedGenerator):
     fe1 = fg.add_entry()
@@ -38,6 +40,7 @@ def generate_jp_entries(fg: FeedGenerator):
     fe2.title("Ruining a line in translation: Code Geass R2 episode 25")
     fe2.link(href="https://www.victorzhou.dev/jp_language_stuff/code_geass_episode_25.html")
     fe2.published(datetime.datetime(year=2020, month=9, day=3, tzinfo=TIMEZONE))
+
 
 def generate_rants_entries(fg: FeedGenerator):
     fe1 = fg.add_entry()
@@ -57,6 +60,14 @@ def generate_rants_entries(fg: FeedGenerator):
     fe3.title("n good musicals")
     fe3.link(href="https://www.victorzhou.dev/rants/n_good_musicals.html")
     fe3.published(datetime.datetime(year=2022, month=11, day=1, tzinfo=TIMEZONE))
+
+
+def generate_transit_entries(fg: FeedGenerator):
+    fe1 = fg.add_entry()
+    fe1.id("https://www.victorzhou.dev/transit/saturdays.html")
+    fe1.title("Saturdays")
+    fe1.link(href="https://www.victorzhou.dev/transit/saturdays.html")
+    fe1.published(datetime.datetime(year=2020, month=7, day=20, tzinfo=TIMEZONE))
 
 if __name__ == "__main__":
     generate_feed()
