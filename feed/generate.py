@@ -20,6 +20,7 @@ def generate_feed():
     generate_jp_entries(fg)
     generate_rants_entries(fg)
     generate_transit_entries(fg)
+    generate_se_entries(fg)
 
     if os.environ.get("RSS_OUTPUT_PATH"):
         fg.rss_file(os.environ["RSS_OUTPUT_PATH"])
@@ -68,6 +69,28 @@ def generate_transit_entries(fg: FeedGenerator):
     fe1.title("Saturdays")
     fe1.link(href="https://www.victorzhou.dev/transit/saturdays.html")
     fe1.published(datetime.datetime(year=2020, month=7, day=20, tzinfo=TIMEZONE))
+
+def generate_se_entries(fg: FeedGenerator):
+    fe1 = fg.add_entry()
+    fe1.id("https://www.victorzhou.dev/se/argparse_and_cmd.html")
+    fe1.title("Using argparse and cmd together")
+    fe1.link([
+        {
+            "href": "https://www.victorzhou.dev/se/argparse_and_cmd.html",
+            "rel": "self",
+        },
+        {
+            "href": "https://www.victorzhou.dev/se/argparse_and_cmd_non_gist.html",
+            "rel": "alternate",
+        },
+    ])
+    fe1.published(datetime.datetime(year=2020, month=5, day=24, tzinfo=TIMEZONE))
+
+    fe2 = fg.add_entry()
+    fe2.id("https://www.victorzhou.dev/se/updates_2023.html")
+    fe2.title("victorzhou.dev Updates April 2023")
+    fe2.link(href="https://www.victorzhou.dev/se/updates_2023.html")
+    fe2.published(datetime.datetime(year=2023, month=4, day=22, tzinfo=TIMEZONE))
 
 if __name__ == "__main__":
     generate_feed()
