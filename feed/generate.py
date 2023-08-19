@@ -21,6 +21,7 @@ def generate_feed():
     generate_rants_entries(fg)
     generate_transit_entries(fg)
     generate_se_entries(fg)
+    generate_travel_entries(fg)
 
     if os.environ.get("RSS_OUTPUT_PATH"):
         fg.rss_file(os.environ["RSS_OUTPUT_PATH"])
@@ -91,6 +92,13 @@ def generate_se_entries(fg: FeedGenerator):
     fe2.title("victorzhou.dev Updates April 2023")
     fe2.link(href="https://www.victorzhou.dev/se/updates_2023.html")
     fe2.published(datetime.datetime(year=2023, month=4, day=22, tzinfo=TIMEZONE))
+
+def generate_travel_entries(fg: FeedGenerator):
+    fe1 = fg.add_entry()
+    fe1.id("https://www.victorzhou.dev/travels/a_photo_a_trip_2019.html")
+    fe1.title("A Photo a Trip (2019 edition) - An Abandoned Article")
+    fe1.link(href="https://www.victorzhou.dev/travels/a_photo_a_trip_2019.html")
+    fe1.published(datetime.datetime(year=2022, month=5, day=16, tzinfo=TIMEZONE))
 
 if __name__ == "__main__":
     generate_feed()
