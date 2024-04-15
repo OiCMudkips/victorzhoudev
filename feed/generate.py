@@ -100,5 +100,11 @@ def generate_travel_entries(fg: FeedGenerator):
     fe1.link(href="https://www.victorzhou.dev/travels/a_photo_a_trip_2019.html")
     fe1.published(datetime.datetime(year=2022, month=5, day=16, tzinfo=TIMEZONE))
 
+    fe2 = fg.add_entry()
+    fe2.id("https://www.victorzhou.dev/travels/buntzen.html")
+    fe2.title("Some photos from Buntzen Lake")
+    fe2.link(href="https://www.victorzhou.dev/travels/buntzen.html")
+    fe2.published(datetime.datetime(year=2024, month=4, day=15, tzinfo=TIMEZONE))
+
 if __name__ == "__main__":
     generate_feed()
