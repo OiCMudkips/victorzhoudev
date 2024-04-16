@@ -15,7 +15,7 @@ jobs:
         env:
           VICTORZHOUDEV_SSH_KEY_PASSPHRASE: ${{ secrets.VICTORZHOUDEV_SSH_KEY_PASSPHRASE }}
         run: |
-          mkdir "${GITHUB_WORKSPACE}/identity/id_rsa"
+          mkdir "${GITHUB_WORKSPACE}/identity"
           echo "${{ secrets.VICTORZHOUDEV_SSH_KEY }}" >> "${GITHUB_WORKSPACE}/identiy/id_rsa"
           DISPLAY=1 SSH_ASKPASS="${GITHUB_WORKSPACE}/.github/util/print_ssh_passphrase.sh" ssh-add "${GITHUB_WORKSPACE}/id_rsa"
       - name: Deploy main website
