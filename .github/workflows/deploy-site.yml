@@ -23,6 +23,7 @@ jobs:
           DISPLAY=1 SSH_ASKPASS="${GITHUB_WORKSPACE}/.github/util/print_ssh_passphrase.sh" ssh-add "${SSH_KEY}"
       - name: Deploy main website
         run: |
+          echo "$SSH_AUTH_SOCK"
           ssh -vvv "${{ secrets.VICTORZHOUDEV_SSH_ADDRESS }}" "rm /home/public/*"
           scp -vvv "${GITHUB_WORKSPACE}/src/*" "${{ secrets.VICTORZHOUDEV_SSH_ADDRESS }}:/home/public/"
       - name: Install Python environment
