@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - main
+      - master
 jobs:
   "Deploy static site":
     runs-on: ubuntu-latest
