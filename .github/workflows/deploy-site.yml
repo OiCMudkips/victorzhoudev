@@ -11,13 +11,15 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
-      - name: Set up SSH identity
+      - name: Set up SSH hosts and SSH identity
         env:
           VICTORZHOUDEV_SSH_KEY_PASSPHRASE: ${{ secrets.VICTORZHOUDEV_SSH_KEY_PASSPHRASE }}
         run: |
-          mkdir "${GITHUB_WORKSPACE}/identity"
-          echo "${{ secrets.VICTORZHOUDEV_SSH_KEY }}" >> "${GITHUB_WORKSPACE}/identity/id_rsa"
-          DISPLAY=1 SSH_ASKPASS="${GITHUB_WORKSPACE}/.github/util/print_ssh_passphrase.sh" ssh-add "${GITHUB_WORKSPACE}/id_rsa"
+          ssh-keyscan "${{ secrets.VICTORZHOUDEV_SSH_HOST }}" >> ~/.ssh/known_hosts
+          SSH_KEY=`mktemp -p "${GITHUB_WORKSPACE}" id_rsaXXXXXX`
+          echo "${{ secrets.VICTORZHOUDEV_SSH_KEY }}" >> "${SSH_KEY}"
+          ssh-agent
+          DISPLAY=1 SSH_ASKPASS="${GITHUB_WORKSPACE}/.github/util/print_ssh_passphrase.sh" ssh-add "${SSH_KEY}"
       - name: Deploy main website
         run: |
           ssh "${{ secrets.VICTORZHOUDEV_SSH_ADDRESS }}" "rm /home/public/*"
