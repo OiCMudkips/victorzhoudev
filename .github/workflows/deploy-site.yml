@@ -15,6 +15,7 @@ jobs:
         env:
           VICTORZHOUDEV_SSH_KEY_PASSPHRASE: ${{ secrets.VICTORZHOUDEV_SSH_KEY_PASSPHRASE }}
         run: |
+          mkdir ~/.ssh
           ssh-keyscan "${{ secrets.VICTORZHOUDEV_SSH_HOST }}" >> ~/.ssh/known_hosts
           SSH_KEY=`mktemp -p "${GITHUB_WORKSPACE}" id_rsaXXXXXX`
           echo "${{ secrets.VICTORZHOUDEV_SSH_KEY }}" >> "${SSH_KEY}"
