@@ -1,0 +1,34 @@
+name: Deploy to 
+run-name: ${{ github.actor }} is deploying victorzhou.dev
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+jobs:
+  "Deploy static site":
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: Set up SSH identity
+        env:
+          VICTORZHOUDEV_SSH_KEY_PASSPHRASE: ${{ secrets.VICTORZHOUDEV_SSH_KEY_PASSPHRASE }}
+        run: |
+          echo "${{ secrets.VICTORZHOUDEV_SSH_KEY }}" >> "${GITHUB_WORKSPACE}/identity/id_rsa"
+          DISPLAY=1 SSH_ASKPASS="${GITHUB_WORKSPACE}/.github/util/print_ssh_passphrase.sh" ssh-add "${GITHUB_WORKSPACE}/identity/id_rsa"
+      - name: Deploy main website
+        run: |
+          ssh "${{ secrets.VICTORZHOUDEV_SSH_ADDRESS }}" "rm /home/public/*"
+          scp "${GITHUB_WORKSPACE}/src/*" "${{ secrets.VICTORZHOUDEV_SSH_ADDRESS }}:/home/public/"
+      - name: Install Python environment
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+      - name: Install Python dependencies
+        run: pip install -r "${GITHUB_WORKSPACE}/feed/requirements.txt"
+      - name: Generate and upload RSS feed files
+        run: |
+          ATOM_OUTPUT_PATH="${GITHUB_WORKSPACE}/feed/atom.xml" RSS_OUTPUT_PATH="${GITHUB_WORKSPACE}/feed/rss.xml" python "${GITHUB_WORKSPACE}/feed/generate.py"
+          scp "${GITHUB_WORKSPACE}/feed/atom.xml" "${{ secrets.VICTORZHOUDEV_SSH_ADDRESS }}:/home/public/feed/"
+          scp "${GITHUB_WORKSPACE}/feed/rss.xml" "${{ secrets.VICTORZHOUDEV_SSH_ADDRESS }}:/home/public/feed/"
