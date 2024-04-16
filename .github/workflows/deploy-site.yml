@@ -19,7 +19,7 @@ jobs:
           ssh-keyscan "${{ secrets.VICTORZHOUDEV_SSH_HOST }}" >> ~/.ssh/known_hosts
           SSH_KEY=`mktemp -p "${GITHUB_WORKSPACE}" id_rsaXXXXXX`
           echo "${{ secrets.VICTORZHOUDEV_SSH_KEY }}" >> "${SSH_KEY}"
-          ssh-agent
+          eval `ssh-agent`
           DISPLAY=1 SSH_ASKPASS="${GITHUB_WORKSPACE}/.github/util/print_ssh_passphrase.sh" ssh-add "${SSH_KEY}"
       - name: Deploy main website
         run: |
