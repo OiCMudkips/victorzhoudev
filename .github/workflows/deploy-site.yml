@@ -19,16 +19,15 @@ jobs:
           ssh-keyscan "${{ secrets.VICTORZHOUDEV_SSH_HOST }}" >> ~/.ssh/known_hosts
           SSH_KEY=`mktemp -p "${GITHUB_WORKSPACE}" id_rsaXXXXXX`
           echo "${{ secrets.VICTORZHOUDEV_SSH_KEY }}" >> "${SSH_KEY}"
-          SSH_AGENT_SETUP=$(ssh-agent)
-          echo "ssh agent setup ${SSH_AGENT_SETUP}"
-          eval "${SSH_AGENT_SETUP}"
+          eval "$(ssh-agent)"
           DISPLAY=1 SSH_ASKPASS="${GITHUB_WORKSPACE}/.github/util/print_ssh_passphrase.sh" ssh-add "${SSH_KEY}"
-          echo "SSH_AGENT_SETUP=${SSH_AGENT_SETUP}" >> $GITHUB_ENV
+          echo "SSH_AUTH_SOCK=${SSH_AUTH_SOCK}" >> $GITHUB_ENV
+          echo "SSH_AGENT_PID=${SSH_AGENT_PID}" >> $GITHUB_ENV
       - name: Deploy main website
         env:
-          SSH_AGENT_SETUP: ${{ env.SSH_AGENT_SETUP }}
+          SSH_AUTH_SOCK: ${{ env.SSH_AUTH_SOCK }}
+          SSH_AGENT_PID: ${{ env.SSH_AGENT_PID }}
         run: |
-          eval "${SSH_AGENT_SETUP}"
           ssh -vvv "${{ secrets.VICTORZHOUDEV_SSH_ADDRESS }}" "rm /home/public/*"
           scp -vvv "${GITHUB_WORKSPACE}/src/*" "${{ secrets.VICTORZHOUDEV_SSH_ADDRESS }}:/home/public/"
       - name: Install Python environment
@@ -39,9 +38,9 @@ jobs:
         run: pip install -r "${GITHUB_WORKSPACE}/feed/requirements.txt"
       - name: Generate and upload RSS feed files
         env:
-          SSH_AGENT_SETUP: ${{ env.SSH_AGENT_SETUP }}
+          SSH_AUTH_SOCK: ${{ env.SSH_AUTH_SOCK }}
+          SSH_AGENT_PID: ${{ env.SSH_AGENT_PID }}
         run: |
-          eval "${SSH_AGENT_SETUP}" 
           ATOM_OUTPUT_PATH="${GITHUB_WORKSPACE}/feed/atom.xml" RSS_OUTPUT_PATH="${GITHUB_WORKSPACE}/feed/rss.xml" python "${GITHUB_WORKSPACE}/feed/generate.py"
           scp "${GITHUB_WORKSPACE}/feed/atom.xml" "${{ secrets.VICTORZHOUDEV_SSH_ADDRESS }}:/home/public/feed/"
           scp "${GITHUB_WORKSPACE}/feed/rss.xml" "${{ secrets.VICTORZHOUDEV_SSH_ADDRESS }}:/home/public/feed/"
