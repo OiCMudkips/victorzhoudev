@@ -135,7 +135,7 @@ run: |
       One lesson I learned while working on this was that environment variables do not propogate automatically
       between GitHub Action workflow steps. I was having trouble getting the SSH and SCP commands to authenticate
       correctly and it turns out that it was because the SSH agent environment variables weren't present in those
-      steps, even though they were set earlier. I had to use `ssh -vvv` flags to figure out that SSH wasn't even
+      steps, even though they were set earlier. I had to use <span class="code">ssh -vvv</span> flags to figure out that SSH wasn't even
       trying to use my temporary SSH key, and confirmed that the environment variable wasn't present by
       printing out the relevant environment variable in testing.
     </p>
