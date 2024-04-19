@@ -20,6 +20,7 @@ jobs:
           SSH_KEY=`mktemp -p "${GITHUB_WORKSPACE}" id_rsaXXXXXX`
           echo "${{ secrets.VICTORZHOUDEV_SSH_KEY }}" >> "${SSH_KEY}"
           SSH_AGENT_SETUP=$(ssh-agent)
+          echo "ssh agent setup ${SSH_AGENT_SETUP}"
           eval "${SSH_AGENT_SETUP}"
           DISPLAY=1 SSH_ASKPASS="${GITHUB_WORKSPACE}/.github/util/print_ssh_passphrase.sh" ssh-add "${SSH_KEY}"
           echo "SSH_AGENT_SETUP=${SSH_AGENT_SETUP}" >> $GITHUB_ENV
