@@ -28,8 +28,8 @@ jobs:
           SSH_AUTH_SOCK: ${{ env.SSH_AUTH_SOCK }}
           SSH_AGENT_PID: ${{ env.SSH_AGENT_PID }}
         run: |
-          ssh -vvv "${{ secrets.VICTORZHOUDEV_SSH_ADDRESS }}" "rm /home/public/*"
-          scp -vvv "${GITHUB_WORKSPACE}/src/*" "${{ secrets.VICTORZHOUDEV_SSH_ADDRESS }}:/home/public/"
+          ssh "${{ secrets.VICTORZHOUDEV_SSH_ADDRESS }}" "rm -r /home/public/*"
+          scp "${GITHUB_WORKSPACE}/src/*" "${{ secrets.VICTORZHOUDEV_SSH_ADDRESS }}:/home/public/"
       - name: Install Python environment
         uses: actions/setup-python@v4
         with:
@@ -42,5 +42,6 @@ jobs:
           SSH_AGENT_PID: ${{ env.SSH_AGENT_PID }}
         run: |
           ATOM_OUTPUT_PATH="${GITHUB_WORKSPACE}/feed/atom.xml" RSS_OUTPUT_PATH="${GITHUB_WORKSPACE}/feed/rss.xml" python "${GITHUB_WORKSPACE}/feed/generate.py"
+          ssh "${{ secrets.VICTORZHOUDEV_SSH_ADDRESS }}" "mkdir /home/public/feed"
           scp "${GITHUB_WORKSPACE}/feed/atom.xml" "${{ secrets.VICTORZHOUDEV_SSH_ADDRESS }}:/home/public/feed/"
           scp "${GITHUB_WORKSPACE}/feed/rss.xml" "${{ secrets.VICTORZHOUDEV_SSH_ADDRESS }}:/home/public/feed/"
