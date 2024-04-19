@@ -28,8 +28,7 @@ jobs:
           SSH_AUTH_SOCK: ${{ env.SSH_AUTH_SOCK }}
           SSH_AGENT_PID: ${{ env.SSH_AGENT_PID }}
         run: |
-          ssh "${{ secrets.VICTORZHOUDEV_SSH_ADDRESS }}" "rm -r /home/public/*"
-          scp "${GITHUB_WORKSPACE}/src/*" "${{ secrets.VICTORZHOUDEV_SSH_ADDRESS }}:/home/public/"
+          ls "${GITHUB_WORKSPACE}/src"
       - name: Install Python environment
         uses: actions/setup-python@v4
         with:
