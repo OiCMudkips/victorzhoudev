@@ -93,6 +93,12 @@ def generate_se_entries(fg: FeedGenerator):
     fe2.link(href="https://www.victorzhou.dev/se/updates_2023.html")
     fe2.published(datetime.datetime(year=2023, month=4, day=22, tzinfo=TIMEZONE))
 
+    fe3 = fg.add_entry()
+    fe3.id("https://www.victorzhou.dev/se/gha_nfs.html")
+    fe3.title("Automating victorzhou.dev deployments using Github Actions")
+    fe3.link(href="https://www.victorzhou.dev/se/gha_nfs.html")
+    fe3.published(datetime.datetime(year=2024, month=4, day=19, tzinfo=TIMEZONE))
+
 def generate_travel_entries(fg: FeedGenerator):
     fe1 = fg.add_entry()
     fe1.id("https://www.victorzhou.dev/travels/a_photo_a_trip_2019.html")
