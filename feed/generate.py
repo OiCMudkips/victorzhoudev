@@ -66,6 +66,12 @@ def generate_rants_entries(fg: FeedGenerator):
     fe4.link(href="https://www.victorzhou.dev/rants/sinclair.html")
     fe4.published(datetime.datetime(year=2026, month=3, day=3, tzinfo=TIMEZONE))
 
+    fe4 = fg.add_entry()
+    fe4.id("https://www.victorzhou.dev/rants/sinclair2.html")
+    fe4.title("English translation of reasons for judgment in Sinclair-Desgagné c. Procureur général du Canada, 2025 QCCS 2551")
+    fe4.link(href="https://www.victorzhou.dev/rants/sinclair2.html")
+    fe4.published(datetime.datetime(year=2026, month=3, day=4, tzinfo=TIMEZONE))
+
 
 def generate_transit_entries(fg: FeedGenerator):
     fe1 = fg.add_entry()
