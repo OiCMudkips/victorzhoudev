@@ -79,6 +79,12 @@ def generate_rants_entries(fg: FeedGenerator):
     fe6.link(href="https://www.victorzhou.dev/rants/sinclair3.html")
     fe6.published(datetime.datetime(year=2026, month=3, day=6, tzinfo=TIMEZONE))
 
+    fe7 = fg.add_entry()
+    fe7.id("https://www.victorzhou.dev/rants/grenier.html")
+    fe7.title("English translation of reasons for judgment in Sa Majesté la Reine c. Paiement, 2011 BCSC 415")
+    fe7.link(href="https://www.victorzhou.dev/rants/grenier.html")
+    fe7.published(datetime.datetime(year=2026, month=3, day=9, tzinfo=TIMEZONE))
+
 
 def generate_transit_entries(fg: FeedGenerator):
     fe1 = fg.add_entry()
