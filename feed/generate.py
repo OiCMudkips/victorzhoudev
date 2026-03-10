@@ -13,9 +13,11 @@ def generate_feed():
     fg.author(name="Victor Zhou", uri="https://www.victorzhou.dev/")
     fg.link(href="https://www.victorzhou.dev/", rel="self")
     fg.logo("https://cdn.victorzhou.dev/img/Icon+-+300x300.jpg")
-    fg.subtitle("Victor Zhou's homepages")
+    fg.subtitle("Victor Zhou's homepage")
     fg.language("en")
     fg.docs("https://www.rssboard.org/rss-specification")
+    fg.copyright("© Copyright Victor Zhou")
+    fg.rights("© Copyright Victor Zhou")
 
     generate_jp_entries(fg)
     generate_rants_entries(fg)
