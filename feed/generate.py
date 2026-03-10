@@ -80,10 +80,11 @@ def generate_rants_entries(fg: FeedGenerator):
     fe6.published(datetime.datetime(year=2026, month=3, day=6, tzinfo=TIMEZONE))
 
     fe7 = fg.add_entry()
-    fe7.id("https://www.victorzhou.dev/rants/grenier.html")
+    fe7.id("https://www.victorzhou.dev/rants/paiement.html")
     fe7.title("English translation of reasons for judgment in Sa Majesté la Reine c. Paiement, 2011 BCSC 415")
-    fe7.link(href="https://www.victorzhou.dev/rants/grenier.html")
+    fe7.link(href="https://www.victorzhou.dev/rants/paiement.html")
     fe7.published(datetime.datetime(year=2026, month=3, day=9, tzinfo=TIMEZONE))
+    fe7.updated(datetime.datetime(year=2026, month=3, day=10, tzinfo=TIMEZONE))
 
     fe8 = fg.add_entry()
     fe8.id("https://www.victorzhou.dev/rants/bandaogo.html")
