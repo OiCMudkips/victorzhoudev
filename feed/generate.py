@@ -94,6 +94,12 @@ def generate_rants_entries(fg: FeedGenerator):
     fe8.link(href="https://www.victorzhou.dev/rants/bandaogo.html")
     fe8.published(datetime.datetime(year=2026, month=3, day=10, tzinfo=TIMEZONE))
 
+    fe9 = fg.add_entry()
+    fe9.id("https://www.victorzhou.dev/rants/2024-bcsc-2600.html")
+    fe9.title("English translation of reasons for judgment in R. c. Grenier, 2024 BCSC 2600")
+    fe9.link(href="https://www.victorzhou.dev/rants/2024-bcsc-2600.html")
+    fe9.published(datetime.datetime(year=2026, month=3, day=11, tzinfo=TIMEZONE))
+
 
 def generate_transit_entries(fg: FeedGenerator):
     fe1 = fg.add_entry()
