@@ -109,6 +109,12 @@ def generate_translation_of_fr_reasons(fg: FeedGenerator):
     fe7.link(href="https://www.victorzhou.dev/translation_of_fr_reasons/2025-fc-114199-canlii.html")
     fe7.published(datetime.datetime(year=2026, month=3, day=16, tzinfo=TIMEZONE))
 
+    fe8 = fg.add_entry()
+    fe8.id("https://www.victorzhou.dev/translation_of_fr_reasons/T-2936-24-court-file.html")
+    fe8.title("English translation of Federal Court file T-2936-24 document summary")
+    fe8.link(href="https://www.victorzhou.dev/translation_of_fr_reasons/T-2936-24-court-file.html")
+    fe8.published(datetime.datetime(year=2026, month=3, day=24, tzinfo=TIMEZONE))
+
 
 def generate_transit_entries(fg: FeedGenerator):
     fe1 = fg.add_entry()
