@@ -123,6 +123,13 @@ def generate_transit_entries(fg: FeedGenerator):
     fe1.link(href="https://www.victorzhou.dev/transit/saturdays.html")
     fe1.published(datetime.datetime(year=2020, month=7, day=20, tzinfo=TIMEZONE))
 
+    fe2 = fg.add_entry()
+    fe2.id("https://www.victorzhou.dev/transit/victoria_clipper.html")
+    fe2.title("The Victoria Clipper during Thanksgiving 2022")
+    fe2.link(href="https://www.victorzhou.dev/transit/victoria_clipper.html")
+    fe2.enclosure(url="https://cdn.victorzhou.dev/img/victoria_clipper/img1.jpg", type="image/jpeg")
+    fe2.published(datetime.datetime(year=2026, month=3, day=24, tzinfo=TIMEZONE))
+
 
 def generate_se_entries(fg: FeedGenerator):
     fe1 = fg.add_entry()
