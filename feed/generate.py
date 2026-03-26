@@ -115,6 +115,12 @@ def generate_translation_of_fr_reasons(fg: FeedGenerator):
     fe8.link(href="https://www.victorzhou.dev/translation_of_fr_reasons/T-2936-24-court-file.html")
     fe8.published(datetime.datetime(year=2026, month=3, day=24, tzinfo=TIMEZONE))
 
+    fe9 = fg.add_entry()
+    fe9.id("https://www.victorzhou.dev/translation_of_fr_reasons/2024-bcsc-277.html")
+    fe9.title("English translation of reasons for judgment in R. c. Abdullah, 2024 BCSC 277")
+    fe9.link(href="https://www.victorzhou.dev/translation_of_fr_reasons/2024-bcsc-277.html")
+    fe9.published(datetime.datetime(year=2026, month=3, day=26, tzinfo=TIMEZONE))
+
 
 def generate_transit_entries(fg: FeedGenerator):
     fe1 = fg.add_entry()
