@@ -122,8 +122,6 @@ def generate_translation_of_fr_reasons(fg: FeedGenerator):
     fe9.published(datetime.datetime(year=2026, month=3, day=26, tzinfo=TIMEZONE))
 
 
-
-
 def generate_transit_entries(fg: FeedGenerator):
     fe1 = fg.add_entry()
     fe1.id("https://www.victorzhou.dev/transit/saturdays.html")
