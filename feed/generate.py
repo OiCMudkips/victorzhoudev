@@ -110,10 +110,18 @@ def generate_translation_of_fr_reasons(fg: FeedGenerator):
     fe7.published(datetime.datetime(year=2026, month=3, day=16, tzinfo=TIMEZONE))
 
     fe8 = fg.add_entry()
-    fe8.id("https://www.victorzhou.dev/translation_of_fr_reasons/2024-bcsc-277.html")
-    fe8.title("English translation of reasons for judgment in R. c. Abdullah, 2024 BCSC 277")
-    fe8.link(href="https://www.victorzhou.dev/translation_of_fr_reasons/2024-bcsc-277.html")
-    fe8.published(datetime.datetime(year=2026, month=3, day=26, tzinfo=TIMEZONE))
+    fe8.id("https://www.victorzhou.dev/translation_of_fr_reasons/T-2936-24-court-file.html")
+    fe8.title("English translation of Federal Court file T-2936-24 document summary")
+    fe8.link(href="https://www.victorzhou.dev/translation_of_fr_reasons/T-2936-24-court-file.html")
+    fe8.published(datetime.datetime(year=2026, month=3, day=24, tzinfo=TIMEZONE))
+
+    fe9 = fg.add_entry()
+    fe9.id("https://www.victorzhou.dev/translation_of_fr_reasons/2024-bcsc-277.html")
+    fe9.title("English translation of reasons for judgment in R. c. Abdullah, 2024 BCSC 277")
+    fe9.link(href="https://www.victorzhou.dev/translation_of_fr_reasons/2024-bcsc-277.html")
+    fe9.published(datetime.datetime(year=2026, month=3, day=26, tzinfo=TIMEZONE))
+
+
 
 
 def generate_transit_entries(fg: FeedGenerator):
@@ -122,6 +130,13 @@ def generate_transit_entries(fg: FeedGenerator):
     fe1.title("Saturdays")
     fe1.link(href="https://www.victorzhou.dev/transit/saturdays.html")
     fe1.published(datetime.datetime(year=2020, month=7, day=20, tzinfo=TIMEZONE))
+
+    fe2 = fg.add_entry()
+    fe2.id("https://www.victorzhou.dev/transit/victoria_clipper.html")
+    fe2.title("The Victoria Clipper during Thanksgiving 2022")
+    fe2.link(href="https://www.victorzhou.dev/transit/victoria_clipper.html")
+    fe2.enclosure(url="https://cdn.victorzhou.dev/img/victoria_clipper/img1.jpg", type="image/jpeg")
+    fe2.published(datetime.datetime(year=2026, month=3, day=24, tzinfo=TIMEZONE))
 
 
 def generate_se_entries(fg: FeedGenerator):
