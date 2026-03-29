@@ -1,7 +1,6 @@
 name: Lint Python feed generator
 
-on:
-  pull_request:
+on: [pull_request]
 
 jobs:
   "Run lint on feed generator":
