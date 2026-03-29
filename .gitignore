@@ -4,3 +4,4 @@
 **/__pycache__
 feed/rss.xml
 feed/atom.xml
+**/.ruff_cache
