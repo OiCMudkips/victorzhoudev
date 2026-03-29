@@ -32,7 +32,7 @@ jobs:
       - name: Install Python environment
         uses: actions/setup-python@v4
         with:
-          python-version: "3.x"
+          python-version: "3.13"
       - name: Install Python dependencies
         run: pip install -r "${GITHUB_WORKSPACE}/feed/requirements.txt"
       - name: Generate and upload RSS feed files
