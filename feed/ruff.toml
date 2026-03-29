@@ -1,0 +1,10 @@
+[lint]
+select = ["ALL"]
+ignore = [
+  # no docstrings needed
+  "D",
+  # line too long
+  "E501",
+  # too many statements
+  "PLR0915"
+]
