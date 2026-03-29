@@ -127,6 +127,12 @@ def generate_translation_of_fr_reasons(fg: FeedGenerator):
     fe10.link(href="https://www.victorzhou.dev/translation_of_fr_reasons/T-2936-24-reasons-dated-20250707.html")
     fe10.published(datetime.datetime(year=2026, month=3, day=27, tzinfo=TIMEZONE))
 
+    fe11 = fg.add_entry()
+    fe11.id("https://www.victorzhou.dev/translation_of_fr_reasons/T-2936-24-reasons-dated-20260115.html")
+    fe11.title("English translation of reasons for judgment in Droits collectifs Québec c. Canada (Cour suprême), unpublished decision dated January 15, 2026")
+    fe11.link(href="https://www.victorzhou.dev/translation_of_fr_reasons/T-2936-24-reasons-dated-20260115.html")
+    fe11.published(datetime.datetime(year=2026, month=3, day=28, tzinfo=TIMEZONE))
+
 
 def generate_transit_entries(fg: FeedGenerator):
     fe1 = fg.add_entry()
