@@ -1,0 +1,23 @@
+name: Lint Python feed generator
+
+on:
+  pull_request:
+
+jobs:
+  "Run lint on feed generator":
+    runs-on: ubuntu-latest
+    steps:
+    jobs:
+  "Deploy-Static-Site":
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out repository code
+      uses: actions/checkout@v4
+    - name: Install Python environment
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.x"
+    - name: Install Python dependencies
+      run: pip install -r "${GITHUB_WORKSPACE}/feed/requirements.txt" "${GITHUB_WORKSPACE}/feed/requirements-dev.txt"
+    - name: Run ruff linter
+      run: ruff check --output-format=github
