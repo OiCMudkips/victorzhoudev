@@ -6,10 +6,6 @@ jobs:
   "Run lint on feed generator":
     runs-on: ubuntu-latest
     steps:
-    jobs:
-  "Deploy-Static-Site":
-    runs-on: ubuntu-latest
-    steps:
     - name: Check out repository code
       uses: actions/checkout@v4
     - name: Install Python environment
