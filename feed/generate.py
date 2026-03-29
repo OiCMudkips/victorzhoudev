@@ -71,7 +71,7 @@ def generate_translation_of_fr_reasons(fg: FeedGenerator) -> None:
     fe1 = fg.add_entry()
     fe1.id("https://www.victorzhou.dev/rants/sinclair.html")
     fe1.title(
-        "English translation of reasons for judgment in Sinclair-Desgagné c. Procureur général du Canada, 2025 QCCS 3859",
+        "English translation of reasons for judgment in Sinclair-Desgagné c. Procureur général du Canada, 2025 QCCS 3859"
     )
     fe1.link(href="https://www.victorzhou.dev/rants/sinclair.html")
     fe1.published(datetime.datetime(year=2026, month=3, day=3, tzinfo=TIMEZONE))
