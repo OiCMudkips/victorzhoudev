@@ -3,7 +3,7 @@ name: Lint Python feed generator
 on: [pull_request]
 
 jobs:
-  "Run lint on feed generator":
+  "Run-Ruff-Linter":
     runs-on: ubuntu-latest
     steps:
     - name: Check out repository code
