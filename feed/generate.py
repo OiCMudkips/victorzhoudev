@@ -174,6 +174,18 @@ def generate_translation_of_fr_reasons(fg: FeedGenerator) -> None:
     )
     fe11.published(datetime.datetime(year=2026, month=3, day=28, tzinfo=TIMEZONE))
 
+    fe12 = fg.add_entry()
+    fe12.id(
+        "https://www.victorzhou.dev/translation_of_fr_reasons/2018-bcsc-2527.html",
+    )
+    fe12.title(
+        "English translation of reasons for judgment in R. c. Vaillancourt, 2018 BCSC 2527",
+    )
+    fe12.link(
+        href="https://www.victorzhou.dev/translation_of_fr_reasons/2018-bcsc-2527.html",
+    )
+    fe12.published(datetime.datetime(year=2026, month=5, day=1, tzinfo=TIMEZONE))
+
 
 def generate_transit_entries(fg: FeedGenerator) -> None:
     fe1 = fg.add_entry()
