@@ -176,15 +176,27 @@ def generate_translation_of_fr_reasons(fg: FeedGenerator) -> None:
 
     fe12 = fg.add_entry()
     fe12.id(
-        "https://www.victorzhou.dev/translation_of_fr_reasons/2018-bcsc-2527.html",
+        "https://www.victorzhou.dev/translation_of_fr_reasons/2024-bcsc-749.html",
     )
     fe12.title(
-        "English translation of reasons for judgment in R. c. Vaillancourt, 2018 BCSC 2527",
+        "English translation of reasons for judgment in R. c. Abdullah, 2024 BCSC 749",
     )
     fe12.link(
+        href="https://www.victorzhou.dev/translation_of_fr_reasons/2024-bcsc-749.html",
+    )
+    fe12.published(datetime.datetime(year=2026, month=3, day=30, tzinfo=TIMEZONE))
+
+    fe13 = fg.add_entry()
+    fe13.id(
+        "https://www.victorzhou.dev/translation_of_fr_reasons/2018-bcsc-2527.html",
+    )
+    fe13.title(
+        "English translation of reasons for judgment in R. c. Vaillancourt, 2018 BCSC 2527",
+    )
+    fe13.link(
         href="https://www.victorzhou.dev/translation_of_fr_reasons/2018-bcsc-2527.html",
     )
-    fe12.published(datetime.datetime(year=2026, month=5, day=1, tzinfo=TIMEZONE))
+    fe13.published(datetime.datetime(year=2026, month=5, day=1, tzinfo=TIMEZONE))
 
 
 def generate_transit_entries(fg: FeedGenerator) -> None:
