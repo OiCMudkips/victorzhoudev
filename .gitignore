@@ -1,6 +1,7 @@
 **/.DS_Store
 **/.vscode
 **/virtualenv_run
+**/venv
 **/__pycache__
 feed/rss.xml
 feed/atom.xml
