@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Set up SSH hosts and SSH identity
         env:
           VICTORZHOUDEV_SSH_KEY_PASSPHRASE: ${{ secrets.VICTORZHOUDEV_SSH_KEY_PASSPHRASE }}
@@ -30,7 +30,7 @@ jobs:
         run: |
           rsync -a --delete-before "${GITHUB_WORKSPACE}/src"/* "${{ secrets.VICTORZHOUDEV_SSH_ADDRESS }}:/home/public/"
       - name: Install Python environment
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v7
         with:
           python-version: "3.13"
       - name: Install Python dependencies
